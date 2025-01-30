@@ -29,7 +29,7 @@ jobs:
             BUILD_TESTS=OFF
             BUILD_EXAMPLES=OFF
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: Atria-${{ matrix.platform.name }}
+          name: ${{ github.event.repository.name }}-${{ matrix.platform.name }}
           path: ./build/
