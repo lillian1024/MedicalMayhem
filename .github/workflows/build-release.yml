@@ -31,7 +31,8 @@ jobs:
             BUILD_TESTS=OFF
             BUILD_EXAMPLES=OFF
       - name: Copy README
-        run: sudo cp ./README ./build/README
+        continue-on-error: true
+        run: sudo cp ./README.md ./build/README.md || sudo cp ./README ./build/README
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
