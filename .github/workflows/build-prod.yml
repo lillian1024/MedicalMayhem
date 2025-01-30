@@ -1,4 +1,4 @@
-name: Build and Export Godot Project
+name: Build and Export CMake Project
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'build-**'
 
 jobs:
-  Godot:
+  CMake:
     runs-on: ubuntu-latest
     strategy:
       matrix:
