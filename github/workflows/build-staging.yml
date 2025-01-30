@@ -1,0 +1,35 @@
+name: Build Godot Project
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  Godot:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        platform:
+          - preset: Linux Build
+            name: Linux
+            extention: ""
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Build
+        id: build
+        uses: lillian1024/godot-mono-action@v1.0
+        with:
+          name: Atria${{ matrix.platform.extention }}
+          preset: ${{ matrix.platform.preset }}
+          debugMode: "true"
+      - name: Build Project
+        uses: threeal/cmake-action@v2.1.0
+        with:
+          c-compiler: gcc
+          build-dir: build/
+          options: |
+            BUILD_TESTS=OFF
+            BUILD_EXAMPLES=OFF

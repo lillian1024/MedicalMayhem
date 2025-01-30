@@ -1,0 +1,44 @@
+name: Build and Export Godot Project
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'build-**'
+
+jobs:
+  Godot:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - preset: Windows Desktop
+            name: Windows-exe
+            extention: ".exe"
+          - preset: Windows Dedicated
+            name: Windows-Dedicated-exe
+            extention: ".exe"
+          - preset: Linux/X11
+            name: Linux-x86
+            extention: ".x86_64"
+          - preset: Linux Docker
+            name: Linux-Dedicated-x86
+            extention: ".x86_64"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Build Project
+        uses: threeal/cmake-action@v2.1.0
+        with:
+          c-compiler: gcc
+          build-dir: build/
+          options: |
+            BUILD_TESTS=OFF
+            BUILD_EXAMPLES=OFF
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Atria-${{ matrix.platform.name }}
+          path: ./build/
