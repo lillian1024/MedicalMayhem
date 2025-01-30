@@ -6,7 +6,7 @@ on:
       - develop
   push:
     branches:
-      - feature/github-actions
+      - 'feature/github-actions'
 
 jobs:
   Godot:
