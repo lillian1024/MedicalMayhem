@@ -1,0 +1,70 @@
+name: Build and Export CMake Release
+
+on:
+  push: 
+    tags:
+      - "release-v**"
+
+jobs:
+  CMake:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - preset: Linux Build
+            name: Linux
+            extention: ""
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Build Project
+        uses: threeal/cmake-action@v2.1.0
+        with:
+          c-compiler: gcc
+          build-dir: ./
+          options: |
+            BUILD_TESTS=OFF
+            BUILD_EXAMPLES=OFF
+      - name: Copy README
+        continue-on-error: true
+        run: sudo cp ./README.md ./build/README.md || sudo cp ./README ./build/README
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-${{ matrix.platform.name }}
+          path: ./build/
+      - name: Rename build folder
+        run: mv ./build ./${{ github.event.repository.name }}
+      - name: Zip build
+        run: zip -r ${{ github.event.repository.name }}-${{ matrix.platform.name }}.zip ./${{ github.event.repository.name }}/
+      - name: Create release
+        id: create_release
+        continue-on-error: true
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: "Automatically generated release from tag: ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./${{ github.event.repository.name }}-${{ matrix.platform.name }}.zip
+          asset_name: ${{ github.event.repository.name }}-${{ matrix.platform.name }}.zip
+          asset_content_type: application/zip
