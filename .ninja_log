@@ -1,0 +1,16 @@
+# ninja log v6
+9	66	1738259195731075100	/cygdrive/c/Users/perra/Desktop/MedicalMayhem/CMakeFiles/cmake.verify_globs	14b78ae7000f7caf
+63	221	1738259186918016200	CMakeFiles/MedicalMayhem.dir/src/main.c.o	eb161d3e9a1934e2
+223	411	1738259187076681800	build/MedicalMayhem.exe	35f45c4a692704bb
+6	85	1738371759959693800	/cygdrive/c/Users/perra/Desktop/MedicalMayhem/CMakeFiles/cmake.verify_globs	14b78ae7000f7caf
+122	346	1738371760074656200	CMakeFiles/MedicalMayhem.dir/src/utils/doctorUtil/doctorUtil.c.o	757b4cf9abe9001f
+140	348	1738371760093718000	CMakeFiles/MedicalMayhem.dir/src/utils/patientUtil/patientUtil.c.o	ddeab402017dea07
+7	96	1738371849968607200	/cygdrive/c/Users/perra/Desktop/MedicalMayhem/CMakeFiles/cmake.verify_globs	14b78ae7000f7caf
+122	523	1738371850082518300	CMakeFiles/MedicalMayhem.dir/src/utils/doctorUtil/doctorScheduleUtil.c.o	6a82e65bc83562e8
+4	63	1738372054032561700	/cygdrive/c/Users/perra/Desktop/MedicalMayhem/CMakeFiles/cmake.verify_globs	14b78ae7000f7caf
+67	308	1738372054095759400	CMakeFiles/MedicalMayhem.dir/src/main.c.o	58b23b9b6be036b5
+85	309	1738372054113849700	CMakeFiles/MedicalMayhem.dir/src/utils/doctorUtil/doctorScheduleUtil.c.o	6a82e65bc83562e8
+309	786	1738372054337958600	build/MedicalMayhem.exe	75dce4d746da2bd8
+3	53	1738372095015411400	/cygdrive/c/Users/perra/Desktop/MedicalMayhem/CMakeFiles/cmake.verify_globs	14b78ae7000f7caf
+56	192	1738372095068506800	CMakeFiles/MedicalMayhem.dir/src/main.c.o	58b23b9b6be036b5
+193	381	1738372095204436200	build/MedicalMayhem.exe	75dce4d746da2bd8
