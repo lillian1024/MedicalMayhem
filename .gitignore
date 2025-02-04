@@ -65,6 +65,10 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 .cmake
+.ninja_deps
+.ninja_log
+build.ninja
 
 # Editors
 .vscode/
+.idea/
