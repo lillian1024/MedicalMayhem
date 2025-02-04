@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - develop
+  push:
+    branches:
+      - feature/CMakeTestingAction
 
 jobs:
   CMake:
@@ -24,5 +27,10 @@ jobs:
           c-compiler: gcc
           build-dir: ./
           options: |
-            BUILD_TESTS=OFF
+            BUILD_TESTS=ON
             BUILD_EXAMPLES=OFF
+      - name: Test Project
+        uses: threeal/ctest-action@v1.1.0
+        with:
+          build-dir: ./
+          verbose: true
