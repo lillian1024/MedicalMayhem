@@ -28,8 +28,13 @@ jobs:
           c-compiler: gcc
           build-dir: ./
           options: |
-            BUILD_TESTS=OFF
+            BUILD_TESTS=ON
             BUILD_EXAMPLES=OFF
+      - name: Test Project
+        uses: threeal/ctest-action@v1.1.0
+        with:
+          test-dir: ./
+          verbose: true
       - name: Copy README
         continue-on-error: true
         run: sudo cp ./README.md ./build/README.md || sudo cp ./README ./build/README
