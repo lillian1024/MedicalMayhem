@@ -32,5 +32,5 @@ jobs:
       - name: Test Project
         uses: threeal/ctest-action@v1.1.0
         with:
-          build-dir: ./
+          build-dir: ./build
           verbose: true
