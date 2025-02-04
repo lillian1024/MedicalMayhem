@@ -13,7 +13,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
 # set compiler details
-set(CMAKE_CC_COMPILER_ENV_VAR "-Wall -Wextra -Werror -g")
+add_compile_options(-Wall -Wextra -Werror -g)
 set(CMAKE_CC_COMPILER gcc)
 
 # auto-fill config header file
