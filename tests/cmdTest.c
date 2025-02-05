@@ -24,5 +24,5 @@ int main()
 
     remove(fileName);
 
-    return 0;
+    return appFlags & APP_FLAG_ERROR;
 }

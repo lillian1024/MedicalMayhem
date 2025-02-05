@@ -42,10 +42,13 @@ void ProcessMainMenuAction(int* appFlags)
             ShowScheduleMenu(1, appFlags);
             break;
         case 4:
-            *appFlags = (*appFlags) | 1;
+            *appFlags = (*appFlags) | APP_FLAG_QUIT;
+            *appFlags = (*appFlags) & ~ APP_FLAG_ERROR;
             return;
         default:
+            *appFlags = (*appFlags) | APP_FLAG_QUIT;
+            *appFlags = (*appFlags) | APP_FLAG_ERROR;
             printf("%sError in program!%s", TTYRED, TTYDEF);
-            break;
+            return;
     }
 }

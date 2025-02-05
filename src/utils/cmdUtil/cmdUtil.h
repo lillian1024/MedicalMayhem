@@ -24,6 +24,9 @@
 #define TTYOVER     "\e[53m"
 #define TTYNOVR     "\e[55m"
 
+#define APP_FLAG_QUIT 0b01
+#define APP_FLAG_ERROR 0b10
+
 #ifdef _WIN32
 #include <conio.h>
 #else
