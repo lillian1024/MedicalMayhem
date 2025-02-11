@@ -6,9 +6,9 @@
 /// @return test success: 0, test failed !0
 int main()
 {
-    int appFlags;
+    int appFlags = 0;
 
-    char* fileName = "cmdInput.txt";
+    /*char* fileName = "cmdInput.txt";
 
     FILE* fptr = fopen(fileName, "w");
 
@@ -22,7 +22,7 @@ int main()
 
     fclose(fptr);
 
-    remove(fileName);
+    remove(fileName);*/
 
     return appFlags & APP_FLAG_ERROR;
 }

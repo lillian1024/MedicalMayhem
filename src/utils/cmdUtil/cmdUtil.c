@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <err.h>
 #include "cmdUtil.h"
 #include "../../config.h"
 #include "menus/mainMenu/mainMenu.h"
@@ -91,6 +93,69 @@ int AskIntChoice(int minChoice, int maxChoice)
     }
 
     return choice;
+}
+
+void getString(char* stringStart, size_t maxLength)
+{
+    //Get string from user
+    fgets(stringStart, maxLength, stdin);
+
+    //Get end of string position
+    size_t len = strcspn(stringStart, "\n");
+
+    //Flush STDIN and check if characters were left in it
+    if (flushSTDIN() > 0)
+    {
+        //Reset end of string position if more than maxLength
+        len = maxLength - 1;
+
+        char choice;
+
+        printf("Inputed text is too long (max: %ld characters) and will be truncated, do you want to (t) truncate or (a) input again: ", maxLength);
+
+        scanf("%c", &choice);
+        getchar();
+
+        while (choice != 't' && choice != 'a')
+        {
+            printf("Invalid choice (t/a), try again: ");
+            scanf("%c", &choice);
+            getchar();
+        }
+
+        if (choice == 'a')
+        {
+            getString(stringStart, maxLength);
+            return;
+        }
+    }
+
+    //Put end of string character at the correct place
+    stringStart[len] = '\0';
+
+    //Flush input buffer to prevent excess data to remain
+}
+
+void AskStr(char* stringStart, int minLength, int maxLength)
+{
+    if (minLength >= maxLength)
+        errx(EXIT_FAILURE, "AskStr: minLength >= maxLength!");
+
+    //Get the string from the user
+    getString(stringStart, maxLength);
+
+    //The length of the inputed string
+    int len = strlen(stringStart);
+
+    //If the string is too short ask for the string again
+    while (len < minLength)
+    {
+        printf("The inputed string is too short! The minimum length is %d characters\nPlease try again: ", minLength);
+
+        getString(stringStart, maxLength);
+
+        len = strlen(stringStart);
+    }
 }
 
 int flushSTDIN()

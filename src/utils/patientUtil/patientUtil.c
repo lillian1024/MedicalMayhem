@@ -1,5 +1,6 @@
 #include <string.h>
 #include "patientUtil.h"
+#include "../cmdUtil/cmdUtil.h"
 
 Patient Patients[MAX_NUMBER_PATIENTS];
 int PatientsLen = 0;
@@ -19,10 +20,10 @@ int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomN
     if (GetPatientRecordByID(patientID) != NULL)
         return 0;
     
-    if (age < MIN_AGE_YEARS)
+    if (age < MIN_PATIENT_AGE_YEARS)
         return 0;
 
-    if (age > MAX_AGE_YEARS)
+    if (age > MAX_PATIENT_AGE_YEARS)
         return 0;
 
     if (name == NULL)

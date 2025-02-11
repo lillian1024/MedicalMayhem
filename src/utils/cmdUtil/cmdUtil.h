@@ -39,6 +39,7 @@ void CmdLaunch(int* appFlags);
 void DisplayTitle();
 void DisplayLine(char* s, int nb);
 int AskIntChoice(int minChoice, int maxChoice);
+void AskStr(char* stringStart, int minLength, int maxLength);
 int flushSTDIN();
 
 #endif
