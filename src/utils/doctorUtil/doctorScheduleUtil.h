@@ -7,6 +7,8 @@
 
 #include "doctorUtil.h"
 
+extern char*** weekSchedule;
+
 void displayWeekSchedule(char ***schedule);
 char ***createSchedule();
 void assignDoctor(char ***schedule, doctorList *list);

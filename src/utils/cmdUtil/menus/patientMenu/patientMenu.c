@@ -63,7 +63,7 @@ void ProcessPatientMenuAction(int* appFlags)
             ShowMainMenu(1, appFlags);
             break;
         default:
-            printf("%sError in program!%s", TTYRED, TTYDEF);
+            printf("%sError in program!%s\n", TTYRED, TTYDEF);
             break;
     }
 }

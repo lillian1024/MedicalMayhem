@@ -21,8 +21,11 @@ typedef struct doctorList {
     doctor *head;
 } doctorList;
 
+extern doctorList doctorLL;
+
 char ***createSchedule();
-void addDoctor(doctorList *list, const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
+void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
+void freeDoctorList(doctorList* list);
 extern const char *weekdays[DAYS];
 extern const char *shiftNames[SHIFTS];
 

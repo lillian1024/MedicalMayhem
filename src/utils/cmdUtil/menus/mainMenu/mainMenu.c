@@ -48,7 +48,7 @@ void ProcessMainMenuAction(int* appFlags)
         default:
             *appFlags = (*appFlags) | APP_FLAG_QUIT;
             *appFlags = (*appFlags) | APP_FLAG_ERROR;
-            printf("%sError in program!%s", TTYRED, TTYDEF);
+            printf("%sError in program!%s\n", TTYRED, TTYDEF);
             return;
     }
 }

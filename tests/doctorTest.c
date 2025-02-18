@@ -4,17 +4,14 @@
 
 int main()
 {
-    doctorList list;
-    list.head = NULL;
-
     // Create a weekly schedule
     char ***schedule = createSchedule();
 
     // Add doctors
     printf("\nAdding doctors...\n");
-    addDoctor(&list, "Smith", 2, 1, 3);
-    addDoctor(&list, "Johnson", 1, 2, 2);
-    addDoctor(&list, "Brown", 3, 2, 1);
+    addDoctor(&doctorLL, "Smith", 2, 1, 3);
+    addDoctor(&doctorLL, "Johnson", 1, 2, 2);
+    addDoctor(&doctorLL, "Brown", 3, 2, 1);
 
     // Assign doctors to shifts
     // Cannot use scanf in test files
@@ -37,10 +34,11 @@ int main()
     free(schedule);
 
     // Free the doctor list
-    doctor *current = list.head;
+    freeDoctorList(&doctorLL);
+    /*doctor *current = list.head;
     while (current != NULL) {
         doctor *temp = current;
         current = current->next;
         free(temp);
-    }
+    }*/
 }
