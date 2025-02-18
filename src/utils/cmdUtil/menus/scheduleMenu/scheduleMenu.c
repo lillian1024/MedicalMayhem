@@ -73,6 +73,17 @@ void ShowWeekSchedule()
 
 void ShowCreateSchedule()
 {
+    if (weekSchedule != NULL)
+    {
+        clrscr();
+        printf("%sThe schedule already exist, you are about to override it!%s\n", TTYRED, TTYDEF);
+        printf("0: Cancel, 1: Continue ");
+        int choice = AskIntChoice(0, 1);
+
+        if (choice == 0)
+            return;
+    }
+
     weekSchedule = createSchedule();
     printf("%sSchedule successfully created!%s", TTYGRN, TTYDEF);
     getchar();
@@ -80,6 +91,14 @@ void ShowCreateSchedule()
 
 void ShowAssignDoctor()
 {
-    clrscr();
-    assignDoctor(weekSchedule, &doctorLL);
+    if (weekSchedule == NULL)
+    {
+        printf("%sWeek schedule has not been created yet!%s\n", TTYRED, TTYDEF);
+        getchar();
+    }
+    else
+    {
+        clrscr();
+        assignDoctor(weekSchedule, &doctorLL);
+    }
 }

@@ -61,6 +61,7 @@ void assignDoctor(char ***schedule, doctorList *list) {
         printf("Doctor '%s' doesn't exist! Creating doctor record.\n", name);
         addDoctor(list, name, (shift == 0), (shift == 1), (shift == 2));
         cpDoctor = list->head;
+        getchar();
     }
 
     schedule[day][shift] = malloc(MAX_NAME_LEN);
