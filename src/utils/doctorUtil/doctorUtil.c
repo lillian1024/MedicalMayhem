@@ -3,6 +3,8 @@
 //
 #include "doctorUtil.h"
 
+#include <cmdUtil.h>
+
 doctorList doctorLL = {
     NULL
 };
@@ -42,6 +44,23 @@ void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAft
     newDoctor->next = list->head;
     list->head = newDoctor;
 }
+
+void showAllDoctor(doctorList* list)
+{
+    int doctorIndex = 0;
+    doctor *current = list->head;
+    while (current != NULL) {
+        doctor *temp = current;
+        current = current->next;
+        printf("%sDoctor number %d:%s \n",TTYUNDER,doctorIndex,TTYNUND);
+        printf("Name: %s\n", temp->name);
+        printf("Morning Shift: %d\n", temp->nbShift[0]);
+        printf("Afternoon Shift: %d\n", temp->nbShift[1]);
+        printf("Evening Shift: %d\n\n", temp->nbShift[2]);
+        doctorIndex++;
+    }
+}
+
 
 void freeDoctorList(doctorList* list)
 {

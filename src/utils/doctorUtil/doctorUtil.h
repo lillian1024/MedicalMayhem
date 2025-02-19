@@ -28,5 +28,6 @@ void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAft
 void freeDoctorList(doctorList* list);
 extern const char *weekdays[DAYS];
 extern const char *shiftNames[SHIFTS];
+void showAllDoctor(doctorList* list);
 
 #endif // DOCTORUTIL_H
