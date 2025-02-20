@@ -21,13 +21,14 @@ void DisplayDoctorMenu()
 {
     printf("%s%sDoctor Menu:%s%s\n", TTYGRN, TTYUNDER, TTYDEF, TTYNUND);
     printf("1. Add New Doctor\n");
-    printf("2. Back\n");
+    printf("2. Show All Doctor\n");
+    printf("3. Back\n");
     printf("Select menu: ");
 }
 
 void ProcessDoctorMenuAction(int* appFlags)
 {
-    int menu = AskIntChoice(1, 2);
+    int menu = AskIntChoice(1, 3);
     
     switch (menu)
     {
@@ -36,6 +37,10 @@ void ProcessDoctorMenuAction(int* appFlags)
             ShowDoctorMenu(1, appFlags);
             break;
         case 2:
+            showAllDoctor(&doctorLL);
+            ShowDoctorMenu(1, appFlags);
+            break;
+        case 3:
             ShowMainMenu(1, appFlags);
             break;
         default:
