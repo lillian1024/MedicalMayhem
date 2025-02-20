@@ -3,7 +3,7 @@
 //
 #include "doctorUtil.h"
 
-#include <cmdUtil.h>
+#include "../cmdUtil/cmdUtil.h"
 
 doctorList doctorLL = {
     NULL
