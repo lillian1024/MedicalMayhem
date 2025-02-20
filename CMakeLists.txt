@@ -12,6 +12,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
+set(RESOURCE_FILE my.rc)
+
 # set compiler details
 add_compile_options(-Wall -Wextra -Werror -g)
 set(CMAKE_CC_COMPILER gcc)
@@ -39,7 +41,9 @@ endforeach()
 list (REMOVE_DUPLICATES Gcc_INCLUDE_DIRS)
 
 # Compile app executable
-add_executable(MedicalMayhem ${Gcc_SOURCES})
+add_executable(MedicalMayhem ${Gcc_SOURCES} ${RESOURCE_FILE})
+
+target_sources(MedicalMayhem PRIVATE ${RESOURCE_FILE})
 
 # Compile test executables
 foreach (_testFile ${TESTS_SOURCES})
