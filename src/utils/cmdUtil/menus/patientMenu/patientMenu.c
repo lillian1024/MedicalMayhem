@@ -99,7 +99,11 @@ void ShowPatientAdd()
     char* newDiagnosis = calloc(strlen(diagnosis), sizeof(char));
     strcpy(newDiagnosis, diagnosis);
 
-    AddNewPatient(patientID, newName, age, newDiagnosis, roomNumber);
+    if (!AddNewPatient(patientID, newName, age, newDiagnosis, roomNumber))
+    {
+        printf("%sUnable to create patient!%s", TTYRED, TTYDEF);
+        getchar();
+    }
 }
 
 Patient* ShowPatientSelection()
@@ -148,7 +152,11 @@ void ShowPatientRecord()
     Patient* patient = ShowPatientSelection();
 
     if (patient == NULL)
+    {
+        printf("%sPatient not found!%s", TTYRED, TTYDEF);
+        getchar();
         return;
+    }
 
     clrscr();
 
@@ -167,7 +175,7 @@ void ShowAllPatientRecords()
 
     if (patientLen <= 0)
     {
-        printf("No patients found!");
+        printf("%sNo patients found!%s", TTYRED, TTYDEF);
 
         getchar();
 
@@ -185,6 +193,15 @@ void ShowAllPatientRecords()
 void ShowDischargePatient()
 {
     Patient* patient = ShowPatientSelection();
+
+    if (patient == NULL)
+    {
+        printf("%sPatient not found!%s", TTYRED, TTYDEF);
+
+        getchar();
+
+        return;
+    }
 
     DischargePatient(patient);
 }
