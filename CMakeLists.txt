@@ -12,6 +12,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
+set(RESOURCE_FILE my.rc)
+
 # set compiler details
 add_compile_options(-Wall -Wextra -Werror -g)
 set(CMAKE_CC_COMPILER gcc)
@@ -29,7 +31,6 @@ list(LENGTH Gcc_SOURCES SOURCES_LENGTH)
 # Prepare test sources
 file(REAL_PATH ${MAIN_C_FILE} REAL_MAIN_PATH)
 list(SUBLIST Gcc_SOURCES 0 ${SOURCES_LENGTH} TEST_SOURCES)
-list(APPEND TEST_SOURCES ${REAL_TEST_PATH})
 list(REMOVE_ITEM TEST_SOURCES ${REAL_MAIN_PATH})
 
 set (Gcc_INCLUDE_DIRS "")
@@ -40,13 +41,18 @@ endforeach()
 list (REMOVE_DUPLICATES Gcc_INCLUDE_DIRS)
 
 # Compile app executable
-add_executable(MedicalMayhem ${Gcc_SOURCES})
+add_executable(MedicalMayhem ${Gcc_SOURCES} ${RESOURCE_FILE})
+
+target_sources(MedicalMayhem PRIVATE ${RESOURCE_FILE})
 
 # Compile test executables
 foreach (_testFile ${TESTS_SOURCES})
     cmake_path(GET _testFile FILENAME _filename)
     cmake_path(REMOVE_EXTENSION _filename OUTPUT_VARIABLE _filenameNoExt)
-    add_executable(${_filenameNoExt} ${_testFile})
+    list(APPEND _fileSources ${_testFile})
+    list(APPEND _fileSources ${TEST_SOURCES})
+    add_executable(${_filenameNoExt} ${_fileSources})
+    unset(_fileSources)
     # target_link_libraries(${_filename} vtkCommon)
     add_test(NAME ${_filenameNoExt} COMMAND ${_filenameNoExt})
 endforeach()

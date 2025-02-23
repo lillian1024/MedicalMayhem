@@ -3,6 +3,9 @@
 //
 
 #include "doctorUtil.h"
+#include "../cmdUtil/cmdUtil.h"
+
+char*** weekSchedule = NULL;
 
 void displayWeekSchedule(char ***schedule){
     printf("\nWeekly Doctor Schedule:\n");
@@ -37,19 +40,13 @@ void assignDoctor(char ***schedule, doctorList *list) {
     char name[MAX_NAME_LEN];
 
     printf("Enter day (0=Monday, 6=Sunday): ");
-    if (scanf("%d", &day) != 1 || day < 0 || day >= DAYS) {
-        errx(1, "Invalid day input");
-    }
+    day = AskIntChoice(0, 6);
 
     printf("Enter shift (0=Morning, 1=Afternoon, 2=Evening): ");
-    if (scanf("%d", &shift) != 1 || shift < 0 || shift >= SHIFTS) {
-        errx(1, "Invalid shift input");
-    }
+    shift = AskIntChoice(0, 6);
 
     printf("Enter doctor's name: ");
-    if (scanf("%s", name) != 1) {
-        errx(1, "Invalid doctor name input");
-    }
+    AskStr(name, 3, MAX_NAME_LEN);
 
     doctor *cpDoctor = list->head;
     while (cpDoctor != NULL) {
@@ -64,6 +61,7 @@ void assignDoctor(char ***schedule, doctorList *list) {
         printf("Doctor '%s' doesn't exist! Creating doctor record.\n", name);
         addDoctor(list, name, (shift == 0), (shift == 1), (shift == 2));
         cpDoctor = list->head;
+        getchar();
     }
 
     schedule[day][shift] = malloc(MAX_NAME_LEN);
