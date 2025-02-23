@@ -24,6 +24,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           lfs: true
+      - name: Install WinGW
+        run: npm i @xpack-dev-tools/mingw-w64-gcc
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
