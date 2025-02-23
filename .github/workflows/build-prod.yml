@@ -1,0 +1,40 @@
+name: Build and Export CMake Project
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'build-**'
+
+jobs:
+  CMake:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - preset: Linux Build
+            name: Linux
+            extention: ""
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Build Project
+        uses: threeal/cmake-action@v2.1.0
+        with:
+          c-compiler: gcc
+          build-dir: ./
+          options: |
+            BUILD_TESTS=ON
+            BUILD_EXAMPLES=OFF
+      - name: Test Project
+        uses: threeal/ctest-action@v1.1.0
+        with:
+          test-dir: ./
+          verbose: true
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-${{ matrix.platform.name }}
+          path: ./build/

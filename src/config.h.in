@@ -1,0 +1,6 @@
+// This file is auto generated using cmake!
+// The project's constants values declarations
+#define PROJECT_NAME "@PROJECT_NAME@"
+#define PROJECT_DESCRIPTION "@PROJECT_DESCRIPTION@"
+#define PROJECT_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define PROJECT_VERSION_MINOR @PROJECT_VERSION_MINOR@

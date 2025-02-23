@@ -1,0 +1,33 @@
+name: Build CMake Project
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  CMake:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        platform:
+          - preset: Linux Build
+            name: Linux
+            extention: ""
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Build Project
+        uses: threeal/cmake-action@v2.1.0
+        with:
+          c-compiler: gcc
+          build-dir: ./
+          options: |
+            BUILD_TESTS=ON
+            BUILD_EXAMPLES=OFF
+      - name: Test Project
+        uses: threeal/ctest-action@v1.1.0
+        with:
+          test-dir: ./
+          verbose: true
