@@ -1,10 +1,21 @@
 ﻿#ifndef DOCTORUTIL_H
 #define DOCTORUTIL_H
 
+#if !defined(__MINGW32__)
+#include <err.h>
+#else
+
+#define errx(retval, ...) do { \
+    fprintf(stderr, __VA_ARGS__); \
+    fprintf(stderr, "Undefined error: %d\n", errno); \
+    exit(retval); \
+} while(0)
+
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <err.h>
 
 #define DAYS 7
 #define SHIFTS 3

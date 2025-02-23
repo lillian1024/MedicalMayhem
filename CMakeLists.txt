@@ -16,7 +16,6 @@ set(RESOURCE_FILE my.rc)
 
 # set compiler details
 add_compile_options(-Wall -Wextra -Werror -g)
-set(CMAKE_CC_COMPILER gcc)
 
 # auto-fill config header file
 configure_file(src/config.h.in src/config.h)

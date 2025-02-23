@@ -1,7 +1,17 @@
+#if !defined(__MINGW32__)
+#include <err.h>
+#else
+
+#define errx(retval, ...) do { \
+    fprintf(stderr, __VA_ARGS__); \
+    fprintf(stderr, "Undefined error: %d\n", errno); \
+    exit(retval); \
+} while(0)
+
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <err.h>
 #include "cmdUtil.h"
 #include "../../config.h"
 #include "menus/mainMenu/mainMenu.h"
@@ -111,7 +121,11 @@ void getString(char* stringStart, size_t maxLength)
 
         char choice;
 
-        printf("Inputed text is too long (max: %ld characters) and will be truncated, do you want to (t) truncate or (a) input again: ", maxLength);
+        #ifdef __MINGW32__
+            printf("Inputed text is too long (max: %lld characters) and will be truncated, do you want to (t) truncate or (a) input again: ", maxLength);
+        #else
+            printf("Inputed text is too long (max: %ld characters) and will be truncated, do you want to (t) truncate or (a) input again: ", maxLength);
+        #endif
 
         scanf("%c", &choice);
         getchar();

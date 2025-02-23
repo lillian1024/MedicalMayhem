@@ -20,13 +20,13 @@ void displayWeekSchedule(char ***schedule){
 char ***createSchedule() {
     char ***schedule = malloc(DAYS * sizeof(char **));
     if (!schedule) {
-        err(1, "Failed to allocate memory for schedule");
+        errx(EXIT_FAILURE, "Failed to allocate memory for schedule");
     }
 
     for (int i = 0; i < DAYS; i++) {
         schedule[i] = malloc(SHIFTS * sizeof(char *));
         if (!schedule[i]) {
-            err(1, "Failed to allocate memory for shifts");
+            errx(1, "Failed to allocate memory for shifts");
         }
         for (int j = 0; j < SHIFTS; j++) {
             schedule[i][j] = NULL;
@@ -66,7 +66,7 @@ void assignDoctor(char ***schedule, doctorList *list) {
 
     schedule[day][shift] = malloc(MAX_NAME_LEN);
     if (!schedule[day][shift]) {
-        err(1, "Memory allocation failed for schedule slot");
+        errx(1, "Memory allocation failed for schedule slot");
     }
     strncpy(schedule[day][shift], name, MAX_NAME_LEN - 1);
     schedule[day][shift][MAX_NAME_LEN - 1] = '\0';

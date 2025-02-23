@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/CrossPlatformBuild
     tags:
       - 'build-**'
 
@@ -15,7 +16,10 @@ jobs:
         platform:
           - preset: Linux Build
             name: Linux
-            extention: ""
+            compiler: "gcc"
+          - preset: Windows Build
+            name: Windows
+            compiler: "x86_64-w64-mingw32-gcc-win32"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,7 +27,7 @@ jobs:
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
-          c-compiler: gcc
+          c-compiler: ${compiler}
           build-dir: ./
           options: |
             BUILD_TESTS=ON

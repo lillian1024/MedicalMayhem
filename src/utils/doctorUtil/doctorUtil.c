@@ -14,13 +14,13 @@ const char *shiftNames[SHIFTS] = {"Morning", "Afternoon", "Evening"};
 
 void validateName(const char *name) {
     if (name == NULL || name[0] == '\0') {
-        errx(1, "Invalid doctor name provided");
+        errx(EXIT_FAILURE, "Invalid doctor name provided");
     }
 }
 
 void validateShift(int shift) {
     if (shift < 0 || shift > 10) { // Assuming doctors cannot have more than 10 shifts per week
-        errx(1, "Invalid shift count: %d", shift);
+        errx(EXIT_FAILURE, "Invalid shift count: %d", shift);
     }
 }
 
@@ -32,7 +32,7 @@ void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAft
 
     doctor *newDoctor = malloc(sizeof(doctor));
     if (!newDoctor) {
-        err(1, "Failed to allocate memory for new doctor");
+        errx(1, "Failed to allocate memory for new doctor");
     }
 
     strncpy(newDoctor->name, name, MAX_NAME_LEN - 1);
