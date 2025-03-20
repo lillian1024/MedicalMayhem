@@ -47,6 +47,7 @@ void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAft
 
 void showAllDoctor(doctorList* list)
 {
+    clrscr();
     int doctorIndex = 0;
     doctor *current = list->head;
     while (current != NULL) {
@@ -59,6 +60,8 @@ void showAllDoctor(doctorList* list)
         printf("Evening Shift: %d\n\n", temp->nbShift[2]);
         doctorIndex++;
     }
+
+    getchar();
 }
 
 
