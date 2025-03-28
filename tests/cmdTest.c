@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../src/utils/cmdUtil/cmdUtil.h"
+#include "../src/utils/saveUtil/saveUtil.h"
 
 /// @brief Test if the cmd runs correctly
 /// @return test success: 0, test failed !0
@@ -8,21 +9,14 @@ int main()
 {
     int appFlags = 0;
 
-    /*char* fileName = "cmdInput.txt";
+    //FILE* file = fopen("build/save.txt", "r");
 
-    FILE* fptr = fopen(fileName, "w");
+    LL_Sentinel* patientList;
+    LL_Sentinel* doctorList;
 
-    fprintf(fptr, "1\n4\n2\n4\n3\n4\n4\n");
+    ReadSaveFile("build/save.txt", &patientList, &doctorList);
 
-    fclose(fptr);
-
-    fptr = freopen(fileName, "rw", stdin);
-
-    CmdLaunch(&appFlags);
-
-    fclose(fptr);
-
-    remove(fileName);*/
+    WriteSaveFile("build/testSaveFile.txt", patientList, doctorList);
 
     return appFlags & APP_FLAG_ERROR;
 }

@@ -7,11 +7,13 @@ int main()
     // Create a weekly schedule
     char ***schedule = createSchedule();
 
+    InitializeDoctorList();
+
     // Add doctors
     printf("\nAdding doctors...\n");
-    addDoctor(&doctorLL, "Smith", 2, 1, 3);
-    addDoctor(&doctorLL, "Johnson", 1, 2, 2);
-    addDoctor(&doctorLL, "Brown", 3, 2, 1);
+    addDoctor("Smith", 2, 1, 3);
+    addDoctor("Johnson", 1, 2, 2);
+    addDoctor("Brown", 3, 2, 1);
 
     // Assign doctors to shifts
     // Cannot use scanf in test files
@@ -24,17 +26,8 @@ int main()
     printf("\nDisplaying schedule...\n");
     displayWeekSchedule(schedule);
 
-    // Free dynamically allocated memory
-    for (int i = 0; i < DAYS; i++) {
-        for (int j = 0; j < SHIFTS; j++) {
-            free(schedule[i][j]);
-        }
-        free(schedule[i]);
-    }
-    free(schedule);
-
     // Free the doctor list
-    freeDoctorList(&doctorLL);
+    DisposeDoctorList();
     /*doctor *current = list.head;
     while (current != NULL) {
         doctor *temp = current;

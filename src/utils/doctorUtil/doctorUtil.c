@@ -5,12 +5,29 @@
 
 #include "../cmdUtil/cmdUtil.h"
 
-doctorList doctorLL = {
-    NULL
-};
+LL_Sentinel* DoctorList;
 
 const char *weekdays[DAYS] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 const char *shiftNames[SHIFTS] = {"Morning", "Afternoon", "Evening"};
+
+/// @brief Initialize the doctor list. This function must be called before any other functions in doctorUtil.
+void InitializeDoctorList()
+{
+    DoctorList = LL_Create();
+}
+
+/// @brief Assigned the Doctor list to an already created list.
+/// @param list The list to assign DoctorList to
+void LoadDoctorList(LL_Sentinel* list)
+{
+    DoctorList = list;
+}
+
+/// @brief Dispose of the doctor list. The InitializeDoctorList function must be called before calling any docotr function after this function.
+void DisposeDoctorList()
+{
+    LL_Dispose(DoctorList);
+}
 
 void validateName(const char *name) {
     if (name == NULL || name[0] == '\0') {
@@ -24,7 +41,12 @@ void validateShift(int shift) {
     }
 }
 
-void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift) {
+int doctorHasId(doctor* doctor, int* id)
+{
+    return doctor->id == *id;
+}
+
+void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift) {
     validateName(name);
     validateShift(nbMorningShift);
     validateShift(nbAfternoonShift);
@@ -35,39 +57,54 @@ void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAft
         err(1, "Failed to allocate memory for new doctor");
     }
 
-    strncpy(newDoctor->name, name, MAX_NAME_LEN - 1);
-    newDoctor->name[MAX_NAME_LEN - 1] = '\0'; // Ensure null termination
+    char* newName = malloc((strlen(name)+1) * sizeof(char));
+
+    if (!newName)
+    {
+        err(1, "Failed to allocate memory for new doctor's name");
+    }
+
+    strncpy(newName, name, MAX_NAME_LEN - 1);
+
+    int id;
+    for (id = 0; LL_Contains(DoctorList, (int(*)(void*, void*))&doctorHasId, &id); id++) { }
+    
+    newDoctor->id = id;
+    newDoctor->name = newName;
 
     newDoctor->nbShift[0] = nbMorningShift;
     newDoctor->nbShift[1] = nbAfternoonShift;
     newDoctor->nbShift[2] = nbEveningShift;
-    newDoctor->next = list->head;
-    list->head = newDoctor;
+
+    LL_Append(DoctorList, newDoctor);
 }
 
-void showAllDoctor(doctorList* list)
+void showDoctor(doctor* doctor, void* data)
 {
-    int doctorIndex = 0;
-    doctor *current = list->head;
-    while (current != NULL) {
-        doctor *temp = current;
-        current = current->next;
-        printf("%sDoctor number %d:%s \n",TTYUNDER,doctorIndex,TTYNUND);
-        printf("Name: %s\n", temp->name);
-        printf("Morning Shift: %d\n", temp->nbShift[0]);
-        printf("Afternoon Shift: %d\n", temp->nbShift[1]);
-        printf("Evening Shift: %d\n\n", temp->nbShift[2]);
-        doctorIndex++;
-    }
+    (void)data;
+    printf("%sDoctor number %d:%s \n",TTYUNDER,doctor->id,TTYNUND);
+    printf("Name: %s\n", doctor->name);
+    printf("Morning Shift: %d\n", doctor->nbShift[0]);
+    printf("Afternoon Shift: %d\n", doctor->nbShift[1]);
+    printf("Evening Shift: %d\n\n", doctor->nbShift[2]);
 }
 
-
-void freeDoctorList(doctorList* list)
+LL_Sentinel* GetDoctorList()
 {
-    doctor *current = list->head;
-    while (current != NULL) {
-        doctor *temp = current;
-        current = current->next;
-        free(temp);
-    }
+    return DoctorList;
+}
+
+void disposeDoctor(doctor* doctorStruct)
+{
+    free(doctorStruct->name);
+    free(doctorStruct);
+}
+
+void showAllDoctor()
+{
+    clrscr();
+
+    LL_ForEach(DoctorList, (void(*)(void*, void*))showDoctor, NULL);
+
+    getchar();
 }

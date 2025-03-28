@@ -1,9 +1,28 @@
+#include <stdlib.h>
 #include <string.h>
 #include "patientUtil.h"
 #include "../cmdUtil/cmdUtil.h"
 
-Patient Patients[MAX_NUMBER_PATIENTS];
-int PatientsLen = 0;
+LL_Sentinel* PatientList;
+
+/// @brief Initialize the Patient list. This function must be called before any other functions in patientUtil.
+void InitializePatientList()
+{
+    PatientList = LL_Create();
+}
+
+/// @brief Assigned the Patient list to an already created list.
+/// @param list The list to assign PatientList to
+void LoadPatientList(LL_Sentinel* list)
+{
+    PatientList = list;
+}
+
+/// @brief Dispose of the patient list. The InitializePatientList function must be called before calling any patient function after this function.
+void DisposePatientList()
+{
+    LL_Dispose(PatientList);
+}
 
 /// @brief Safely add a new patient to the record (Patients array).
 /// @param patientID Patient's ID
@@ -14,9 +33,6 @@ int PatientsLen = 0;
 /// @return 1 if succefull, 0 if failed
 int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomNumber)
 {
-    if (PatientsLen == MAX_NUMBER_PATIENTS)
-        return 0;
-
     if (GetPatientRecordByID(patientID) != NULL)
         return 0;
     
@@ -29,7 +45,12 @@ int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomN
     if (name == NULL)
         return 0;
 
-    Patient newPatient = {
+    Patient* newPatient = malloc(sizeof(Patient));
+
+    if (newPatient == NULL)
+        return 0;
+
+    *newPatient = (Patient){
         patientID,
         name,
         age,
@@ -37,9 +58,7 @@ int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomN
         roomNumber
     };
 
-    Patients[PatientsLen] = newPatient;
-
-    PatientsLen++;
+    LL_Append(PatientList, newPatient);
 
     return 1;
 }
@@ -47,12 +66,14 @@ int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomN
 /// @brief Return a list of all recorded patients with max length MAX_NUMBER_PATIENTS.
 /// @param patientLen (optionnal) valriable to store the returned list's length
 /// @return A list of all recorded patients
-Patient* GetAllPatientsRecords(int* patientLen)
+LL_Sentinel* GetAllPatientsRecords()
 {
-    if (patientLen != NULL)
-        *patientLen = PatientsLen;
+    return PatientList;
+}
 
-    return Patients;
+Patient* GetPatientAtIndex(int index)
+{
+    return (Patient*)LL_Get(PatientList, index);
 }
 
 /// @brief Return a pointer to a Patient struct which as Patient.PatientID == patientID or NULL if not found.
@@ -60,10 +81,11 @@ Patient* GetAllPatientsRecords(int* patientLen)
 /// @return The found Patient or NULL
 Patient* GetPatientRecordByID(int patientID)
 {
-    for (int i = 0; i < PatientsLen; i++)
+    for (unsigned int i = 0; i < PatientList->length; i++)
     {
-        if (Patients[i].PatientID == patientID)
-            return Patients + i;
+        Patient* patient = GetPatientAtIndex(i);
+        if (patient->PatientID == patientID)
+            return patient;
     }
 
     return NULL;
@@ -74,32 +96,30 @@ Patient* GetPatientRecordByID(int patientID)
 /// @return The found Patient or NULL
 Patient* GetPatientRecordByName(char* patientName)
 {
-    for (int i = 0; i < PatientsLen; i++)
+    for (unsigned int i = 0; i < PatientList->length; i++)
     {
-        if (strcmp(Patients[i].Name, patientName) == 0)
-            return Patients + i;
+        Patient* patient = GetPatientAtIndex(i);
+        if (strcmp(patient->Name, patientName) == 0)
+            return patient;
     }
 
     return NULL;
 }
 
-void OffsetPatientRecord(int startingIndex, int offset)
-{
-    for (int i = startingIndex; i < PatientsLen; i++)
-    {
-        Patients[i - offset] = Patients[i];
-    }
-}
-
+/// @brief Discharge a patient, remove it from the patient list and free all resources used by this patient.
+/// @param patient The patient to discharge
 void DischargePatient(Patient* patient)
 {
-    for (int i = 0; i < PatientsLen; i++)
+    for (unsigned int i = 0; i < PatientList->length; i++)
     {
-        if (patient == (Patients + i))
+        if (patient == GetPatientAtIndex(i))
         {
-            OffsetPatientRecord(i+1, 1);
+            LL_RemoveAt(PatientList, i);
 
-            PatientsLen--;
+            free(patient->Name);
+            free(patient->Diagnosis);
+
+            free(patient);
 
             return;
         }
