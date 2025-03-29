@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <err.h>
+#include "../llistUtil/llist.h"
 
 #define DAYS 7
 #define SHIFTS 3
@@ -12,22 +13,27 @@
 
 typedef struct doctor {
     int id;
-    char name[MAX_NAME_LEN]; // Use a fixed-size array to avoid memory issues
+    char* name;
     int nbShift[SHIFTS]; // Use an array instead of a pointer to avoid segmentation faults
-    struct doctor *next; // For linked list usage
 } doctor;
 
-typedef struct doctorList {
-    doctor *head;
-} doctorList;
+extern LL_Sentinel* DoctorList;
 
-extern doctorList doctorLL;
+void InitializeDoctorList();
+void LoadDoctorList(LL_Sentinel* list);
+void DisposeDoctorList();
 
-char ***createSchedule();
-void addDoctor(doctorList* list, const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
-void freeDoctorList(doctorList* list);
+void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
 extern const char *weekdays[DAYS];
 extern const char *shiftNames[SHIFTS];
-void showAllDoctor(doctorList* list);
+void showAllDoctor();
+
+doctor* GetDoctorById(int id);
+doctor* GetDoctorByName(char* name);
+
+LL_Sentinel* GetDoctorList();
+
+int doctorHasId(doctor* doctor, int* id);
+int doctorhasName(doctor* doctor, char* name);
 
 #endif // DOCTORUTIL_H

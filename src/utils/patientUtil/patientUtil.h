@@ -1,3 +1,5 @@
+#include "../llistUtil/llist.h"
+
 #ifndef PATIENT_UTIL_H
 #define PATIENT_UTIL_H
 
@@ -20,9 +22,13 @@ typedef struct
     int RoomNumber;
 }Patient;
 
+void InitializePatientList();
+void LoadPatientList(LL_Sentinel* list);
+void DisposePatientList();
+
 int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomNumber);
 
-Patient* GetAllPatientsRecords(int* patientLen);
+LL_Sentinel* GetAllPatientsRecords();
 
 Patient* GetPatientRecordByID(int patientID);
 Patient* GetPatientRecordByName(char* patientName);

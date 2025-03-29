@@ -99,6 +99,6 @@ void ShowAssignDoctor()
     else
     {
         clrscr();
-        assignDoctor(weekSchedule, &doctorLL);
+        assignDoctor(weekSchedule);
     }
 }
