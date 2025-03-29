@@ -11,12 +11,12 @@ int main()
 
     //FILE* file = fopen("build/save.txt", "r");
 
-    LL_Sentinel* patientList;
+    /*LL_Sentinel* patientList;
     LL_Sentinel* doctorList;
 
     ReadSaveFile("build/save.txt", &patientList, &doctorList);
 
-    WriteSaveFile("build/testSaveFile.txt", patientList, doctorList);
+    WriteSaveFile("build/testSaveFile.txt", patientList, doctorList);*/
 
     return appFlags & APP_FLAG_ERROR;
 }

@@ -3,22 +3,26 @@
 #include <string.h>
 #include "saveUtil.h"
 
+#ifdef WIN32
+#include <io.h>
+#define R_OK 4
+#define access _access
+#else
+#include <unistd.h>
+#endif
+
 const char* saveDataSubPath = "/saveData.txt";
 char* saveDataPath;
+
+const char* saveScheduleSubPath = "/saveSchedule.txt";
+char* saveSchedulePath;
 
 int nbPatients;
 int nbDoctor;
 
 int CanLoad(char* filepath)
 {
-    FILE* file = fopen(filepath, "r");
-
-    if (file == NULL)
-    {
-        return 0;
-    }
-
-    return 1;
+    return access(filepath, R_OK) == 0;
 }
 
 char* GetSaveDataPath(const char* appPath)
@@ -44,9 +48,29 @@ char* GetSaveDataPath(const char* appPath)
     return dataPath;
 }
 
+char* GetSaveSchedulePath(const char* appPath)
+{
+    int saveSchedulePathLength;
+
+    saveSchedulePathLength = strlen(appPath) + strlen(saveScheduleSubPath) + 1;
+
+    char* schedulePath = calloc(saveSchedulePathLength, sizeof(char));
+
+    if (schedulePath == NULL)
+    {
+        return NULL;
+    }
+
+    strcpy(schedulePath, appPath);
+    strcat(schedulePath, saveScheduleSubPath);
+
+    return schedulePath;
+}
+
 void LoadSavePaths(const char* appPath)
 {
     saveDataPath = GetSaveDataPath(appPath);
+    saveSchedulePath = GetSaveSchedulePath(appPath);
 }
 
 //Writing save file
@@ -72,11 +96,29 @@ char* GetDoctorDataLine(const doctor* doctorStruct, char* result)
     return result;
 }
 
-int WriteSaveFile(char* filepath, LL_Sentinel* patientList, LL_Sentinel* doctorList)
+void WriteScheduleToFile(FILE* file, int** schedule)
 {
-    FILE* file = fopen(filepath, "w");
+    if (!schedule)
+    {
+        return;
+    }
 
-    if (file == NULL)
+    for (int i = 0; i < DAYS; i++) 
+    {
+        for (int j = 0; j < SHIFTS; j++) 
+        {
+            fprintf(file, "%d|", schedule[i][j]);
+        }
+    }
+    fprintf(file, "\n");
+}
+
+int WriteSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel* patientList, LL_Sentinel* doctorList)
+{
+    FILE* dataFile = fopen(dataFilePath, "w");
+    FILE* scheduleFile = fopen(scheduleFilePath, "w");
+
+    if (dataFile == NULL)
     {
         return 0;
     }
@@ -84,14 +126,14 @@ int WriteSaveFile(char* filepath, LL_Sentinel* patientList, LL_Sentinel* doctorL
     char metaDataStr[100];
     GetSaveMetaDataLines(patientList->length, doctorList->length, metaDataStr);
 
-    fprintf(file, "%s", metaDataStr);
+    fprintf(dataFile, "%s", metaDataStr);
 
     for (unsigned int i = 0; i < patientList->length; i++)
     {
         char patientStr[256];
         GetPatientDataLine((Patient*)LL_Get(patientList, i), patientStr);
 
-        fprintf(file, "%s\n", patientStr);
+        fprintf(dataFile, "%s\n", patientStr);
     }
 
     for (unsigned int i = 0; i < doctorList->length; i++)
@@ -99,8 +141,13 @@ int WriteSaveFile(char* filepath, LL_Sentinel* patientList, LL_Sentinel* doctorL
         char doctorStr[256];
         GetDoctorDataLine((doctor*)LL_Get(doctorList, i), doctorStr);
 
-        fprintf(file, "%s\n", doctorStr);
+        fprintf(dataFile, "%s\n", doctorStr);
     }
+
+    WriteScheduleToFile(scheduleFile, weekSchedule);
+
+    fclose(dataFile);
+    fclose(scheduleFile);
 
     return 1;
 }
@@ -237,18 +284,41 @@ int ReadAllDoctors(FILE* file, int nbDoctor, LL_Sentinel* doctorList)
     return 1;
 }
 
-int ReadSaveFile(char* filepath, LL_Sentinel** patientList, LL_Sentinel** doctorList)
+int ReadScheduleFromFile(FILE* file, int*** schedule)
 {
-    FILE* file = fopen(filepath, "r");
+    *schedule = createSchedule();
+
+    for (int i = 0; i < DAYS; i++) 
+    {
+        for (int j = 0; j < SHIFTS; j++) 
+        {
+            int id;
+
+            if (fscanf(file, "%d|", & id) != 1)
+            {
+                return 0;
+            }
+
+            (*schedule)[i][j] = id;
+        }
+    }
+
+    return 1;
+}
+
+int ReadSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel** patientList, LL_Sentinel** doctorList)
+{
+    FILE* dataFile = fopen(dataFilePath, "r");
+    FILE* scheduleFile = fopen(scheduleFilePath, "r");
     
-    if (!file)
+    if (!dataFile)
     {
         return 0;
     }
 
     int nbPatient, nbDoctor;
 
-    if (!GetSaveMetaData(file, &nbPatient, &nbDoctor))
+    if (!GetSaveMetaData(dataFile, &nbPatient, &nbDoctor))
     {
         return 0;
     }
@@ -260,7 +330,7 @@ int ReadSaveFile(char* filepath, LL_Sentinel** patientList, LL_Sentinel** doctor
         return 0;
     }
 
-    if (!ReadAllPatients(file, nbPatient, *patientList))
+    if (!ReadAllPatients(dataFile, nbPatient, *patientList))
     {
         LL_Dispose(*patientList);
 
@@ -276,12 +346,20 @@ int ReadSaveFile(char* filepath, LL_Sentinel** patientList, LL_Sentinel** doctor
         return 0;
     }
 
-    if (!ReadAllDoctors(file, nbDoctor, *doctorList))
+    if (!ReadAllDoctors(dataFile, nbDoctor, *doctorList))
     {
         LL_Dispose(*patientList);
 
         return 0;
     }
+
+    if (!ReadScheduleFromFile(scheduleFile, &weekSchedule))
+    {
+        return 0;
+    }
+
+    fclose(dataFile);
+    fclose(scheduleFile);
 
     return 1;
 }

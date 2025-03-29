@@ -5,7 +5,7 @@
 int main()
 {
     // Create a weekly schedule
-    char ***schedule = createSchedule();
+    int** schedule = createSchedule();
 
     InitializeDoctorList();
 

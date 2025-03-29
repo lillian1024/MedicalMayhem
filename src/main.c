@@ -6,26 +6,31 @@
 #include "saveUtil.h"
 #include "cmdUtil.h"
 
-void LoadData(void)
-{
-    LL_Sentinel* patientList;
-    LL_Sentinel* doctorList;
-
-    ReadSaveFile(saveDataPath, &patientList, &doctorList);
-
-    LoadPatientList(patientList);
-    LoadDoctorList(doctorList);
-}
-
 void InitilizeData(void)
 {
     InitializePatientList();
     InitializeDoctorList();
 }
 
+void LoadData(void)
+{
+    LL_Sentinel* patientList;
+    LL_Sentinel* doctorList;
+
+    if (!ReadSaveFile(saveDataPath, saveSchedulePath, &patientList, &doctorList))
+    {
+        InitilizeData();
+
+        return;
+    }
+
+    LoadPatientList(patientList);
+    LoadDoctorList(doctorList);
+}
+
 void InitializeProgram(void)
 {
-    if (CanLoad(saveDataPath))
+    if (CanLoad(saveDataPath) && CanLoad(saveSchedulePath))
     {
         LoadData();
     }
@@ -37,7 +42,7 @@ void InitializeProgram(void)
 
 void SaveData(void)
 {
-    WriteSaveFile(saveDataPath, GetAllPatientsRecords(), GetDoctorList());
+    WriteSaveFile(saveDataPath, saveSchedulePath, GetAllPatientsRecords(), GetDoctorList());
 }
 
 void CloseProgram(void)
@@ -55,7 +60,7 @@ void LoadSaveFilesPath(const char* appPath)
 
 int main(int argc, char* argv[])
 {
-    (void)argc;
+    (void)argc, (void)argv;
 
     LoadSaveFilesPath(argv[0]);
 

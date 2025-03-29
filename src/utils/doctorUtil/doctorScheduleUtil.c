@@ -6,63 +6,63 @@
 #include "../cmdUtil/cmdUtil.h"
 #include "../llistUtil/llist.h"
 
-char*** weekSchedule = NULL;
+int** weekSchedule = NULL;
 
-void displayWeekSchedule(char ***schedule){
+void displayWeekSchedule(int** schedule)
+{
     printf("\nWeekly Doctor Schedule:\n");
     for (int i = 0; i < DAYS; i++) {
         printf("%s:\n", weekdays[i]);
-        for (int j = 0; j < SHIFTS; j++) {
-            printf("  %s: %s\n", shiftNames[j], (schedule[i][j] == NULL) ? "(Not assigned)" : schedule[i][j]);
+        for (int j = 0; j < SHIFTS; j++) 
+        {
+            if (schedule[i][j] < 0)
+            {
+                printf("  %s: %s\n", shiftNames[j], "(Not assigned)");
+            }
+            else
+            {
+                int doctorIndex = LL_IndexOf(DoctorList, (int(*)(void*,void*))&doctorHasId, &(schedule[i][j]));
+
+                doctor* currentDoctor = LL_Get(DoctorList, doctorIndex);
+
+                printf("  %s: %s\n", shiftNames[j], currentDoctor->name);
+            }
         }
     }
 }
 
-char ***createSchedule() {
-    char ***schedule = malloc(DAYS * sizeof(char **));
-    if (!schedule) {
+int** createSchedule()
+{
+    int** schedule = malloc(DAYS * sizeof(int*));
+    if (!schedule) 
+    {
         err(1, "Failed to allocate memory for schedule");
     }
 
-    for (int i = 0; i < DAYS; i++) {
-        schedule[i] = malloc(SHIFTS * sizeof(char *));
-        if (!schedule[i]) {
+    for (int i = 0; i < DAYS; i++) 
+    {
+        schedule[i] = malloc(SHIFTS * sizeof(int));
+        if (!schedule[i]) 
+        {
             err(1, "Failed to allocate memory for shifts");
         }
-        for (int j = 0; j < SHIFTS; j++) {
-            schedule[i][j] = NULL;
+
+        for (int j = 0; j < SHIFTS; j++) 
+        {
+            schedule[i][j] = -1;
         }
     }
     return schedule;
 }
 
-int doctorhasName(doctor* doctor, char* name)
+void destoryWeekSchedule()
 {
-    return strcmp(doctor->name, name) == 0;
-}
-
-doctor* GetDoctorById(int id)
-{
-    int index = LL_IndexOf(DoctorList, (int(*)(void*, void*))&doctorHasId, &id);
-
-    if (index < 0)
+    for (int i = 0; i < DAYS; i++) 
     {
-        return NULL;
+        free(weekSchedule[i]);
     }
 
-    return (doctor*)LL_Get(DoctorList, index);
-}
-
-doctor* GetDoctorByName(char* name)
-{
-    int index = LL_IndexOf(DoctorList, (int(*)(void*, void*))&doctorhasName, name);
-
-    if (index < 0)
-    {
-        return NULL;
-    }
-
-    return (doctor*)LL_Get(DoctorList, index);
+    free(weekSchedule);
 }
 
 doctor* GetDoctorBy()
@@ -79,6 +79,8 @@ doctor* GetDoctorBy()
         printf("Please input the id of the doctor: ");
         scanf("%d", &id);
 
+        flushSTDIN();
+
         doctor = GetDoctorById(id);
     }
     else
@@ -94,15 +96,18 @@ doctor* GetDoctorBy()
     if (doctor == NULL)
     {
         printf("%sDoctor not found!%s\n", TTYRED, TTYDEF);
+
+        getchar();
+
+        return NULL;
     }
 
-    return NULL;
+    return doctor;
 }
 
-void assignDoctor(char ***schedule)
+void assignDoctor(int** schedule)
 {
     int day, shift;
-    char name[MAX_NAME_LEN];
 
     printf("Enter day (0=Monday, 6=Sunday): ");
     day = AskIntChoice(0, 6);
@@ -116,13 +121,8 @@ void assignDoctor(char ***schedule)
     {
         return;
     }
-
-    schedule[day][shift] = malloc(MAX_NAME_LEN);
-    if (!schedule[day][shift]) {
-        err(1, "Memory allocation failed for schedule slot");
-    }
-    strncpy(schedule[day][shift], name, MAX_NAME_LEN - 1);
-    schedule[day][shift][MAX_NAME_LEN - 1] = '\0';
+    
+    schedule[day][shift] = currentDoctor->id;
 
     printf("Doctor assigned successfully!\n");
 }

@@ -4,6 +4,7 @@
 #include "../patientMenu/patientMenu.h"
 #include "../doctorMenu/doctorMenu.h"
 #include "../scheduleMenu/scheduleMenu.h"
+#include "../managmentMenu/managmentMenu.h"
 
 void ShowMainMenu(int clearScreen, int* appFlags)
 {
@@ -22,13 +23,14 @@ void DisplayMainMenu()
     printf("1. Patient Management\n");
     printf("2. Doctor Management\n");
     printf("3. Schedule Management\n");
-    printf("4. Quit\n");
+    printf("4. Management Menu\n");
+    printf("5. Quit\n");
     printf("Select menu: ");
 }
 
 void ProcessMainMenuAction(int* appFlags)
 {
-    int menu = AskIntChoice(1, 4);
+    int menu = AskIntChoice(1, 5);
     
     switch (menu)
     {
@@ -42,6 +44,9 @@ void ProcessMainMenuAction(int* appFlags)
             ShowScheduleMenu(1, appFlags);
             break;
         case 4:
+            ShowManagmentMenu(1, appFlags);
+            break;
+        case 5:
             *appFlags = (*appFlags) | APP_FLAG_QUIT;
             *appFlags = (*appFlags) & ~ APP_FLAG_ERROR;
             return;

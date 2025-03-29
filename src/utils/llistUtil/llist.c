@@ -19,6 +19,7 @@ LL_Sentinel* LL_Create()
 }
 
 /// @brief Free the list and all elements of the list.
+/// @warning Only list objects are freed, data must be freed independently!
 /// @param ll The list to dispose of
 void LL_Dispose(LL_Sentinel* ll)
 {

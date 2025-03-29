@@ -7,10 +7,11 @@
 
 #include "doctorUtil.h"
 
-extern char*** weekSchedule;
+extern int** weekSchedule;
 
-void displayWeekSchedule(char ***schedule);
-char ***createSchedule();
-void assignDoctor(char ***schedule);
+void displayWeekSchedule(int** schedule);
+int** createSchedule();
+void destoryWeekSchedule();
+void assignDoctor(int** schedule);
 
 #endif //DOCTORSCHEDULEUTIL_H

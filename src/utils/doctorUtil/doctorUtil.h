@@ -23,14 +23,17 @@ void InitializeDoctorList();
 void LoadDoctorList(LL_Sentinel* list);
 void DisposeDoctorList();
 
-char ***createSchedule();
 void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
 extern const char *weekdays[DAYS];
 extern const char *shiftNames[SHIFTS];
 void showAllDoctor();
 
+doctor* GetDoctorById(int id);
+doctor* GetDoctorByName(char* name);
+
 LL_Sentinel* GetDoctorList();
 
 int doctorHasId(doctor* doctor, int* id);
+int doctorhasName(doctor* doctor, char* name);
 
 #endif // DOCTORUTIL_H

@@ -46,6 +46,11 @@ int doctorHasId(doctor* doctor, int* id)
     return doctor->id == *id;
 }
 
+int doctorhasName(doctor* doctor, char* name)
+{
+    return strcmp(doctor->name, name) == 0;
+}
+
 void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift) {
     validateName(name);
     validateShift(nbMorningShift);
@@ -107,4 +112,28 @@ void showAllDoctor()
     LL_ForEach(DoctorList, (void(*)(void*, void*))showDoctor, NULL);
 
     getchar();
+}
+
+doctor* GetDoctorById(int id)
+{
+    int index = LL_IndexOf(DoctorList, (int(*)(void*, void*))&doctorHasId, &id);
+
+    if (index < 0)
+    {
+        return NULL;
+    }
+
+    return (doctor*)LL_Get(DoctorList, index);
+}
+
+doctor* GetDoctorByName(char* name)
+{
+    int index = LL_IndexOf(DoctorList, (int(*)(void*, void*))&doctorhasName, name);
+
+    if (index < 0)
+    {
+        return NULL;
+    }
+
+    return (doctor*)LL_Get(DoctorList, index);
 }
