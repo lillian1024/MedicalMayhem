@@ -23,9 +23,27 @@ void LoadDoctorList(LL_Sentinel* list)
     DoctorList = list;
 }
 
+void disposeDoctor(doctor* doctorStruct)
+{
+    free(doctorStruct->name);
+    free(doctorStruct);
+}
+
+/// @brief Free a specified patient data.
+/// @param patient The patient data to free
+/// @param data Unsuded parameter to be compilante for LL_ForEach() function.
+void disposeDoctorForEach(void* doctorData, void* data) 
+{
+    (void)data;
+
+    disposeDoctor((doctor*)doctorData);
+};
+
 /// @brief Dispose of the doctor list. The InitializeDoctorList function must be called before calling any docotr function after this function.
 void DisposeDoctorList()
 {
+    LL_ForEach(DoctorList, disposeDoctorForEach, NULL);
+
     LL_Dispose(DoctorList);
 }
 
@@ -97,12 +115,6 @@ void showDoctor(doctor* doctor, void* data)
 LL_Sentinel* GetDoctorList()
 {
     return DoctorList;
-}
-
-void disposeDoctor(doctor* doctorStruct)
-{
-    free(doctorStruct->name);
-    free(doctorStruct);
 }
 
 void showAllDoctor()

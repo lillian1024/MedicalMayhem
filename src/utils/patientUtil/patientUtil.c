@@ -18,9 +18,29 @@ void LoadPatientList(LL_Sentinel* list)
     PatientList = list;
 }
 
+void freePatient(Patient* patient)
+{
+    free(patient->Name);
+    free(patient->Diagnosis);
+
+    free(patient);
+}
+
+/// @brief Free a specified patient data.
+/// @param patient The patient data to free
+/// @param data Unsuded parameter to be compilante for LL_ForEach() function.
+void disposePatient(void* patient, void* data) 
+{
+    (void)data;
+
+    freePatient((Patient*)patient);
+};
+
 /// @brief Dispose of the patient list. The InitializePatientList function must be called before calling any patient function after this function.
 void DisposePatientList()
 {
+    LL_ForEach(PatientList, disposePatient, NULL);
+
     LL_Dispose(PatientList);
 }
 
