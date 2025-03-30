@@ -9,6 +9,9 @@
 extern char* saveDataPath;
 extern char* saveSchedulePath;
 
+extern const char* backupDataSubPath;
+extern const char* backupScheduleSubPath;
+
 void LoadSavePaths(const char* appPath);
 
 int CanLoad(char* filepath);

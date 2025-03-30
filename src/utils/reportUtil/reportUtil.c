@@ -200,6 +200,11 @@ void GetRoomStats(int* lowestUsage, int* highestUsage, double* averageUsage)
 
 char* GetDoctorReport()
 {
+    if (weekSchedule == NULL)
+    {
+        return NULL;
+    }
+
     int mostShifts = CountShifts(GetMostBusyDoctor());
     int leastShifts = CountShifts(GetLeastBusyDoctor());
     double averageShifts = GetAverageNbShift();

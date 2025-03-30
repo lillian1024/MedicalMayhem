@@ -17,6 +17,9 @@ char* saveDataPath;
 const char* saveScheduleSubPath = "/saveSchedule.txt";
 char* saveSchedulePath;
 
+const char* backupDataSubPath = "_data.txt";
+const char* backupScheduleSubPath = "_schedule.txt";
+
 int nbPatients;
 int nbDoctor;
 
