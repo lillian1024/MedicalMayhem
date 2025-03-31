@@ -26,8 +26,6 @@ jobs:
           lfs: true
       - name: Install WinGW
         run: sudo apt install -y gcc-mingw-w64
-      - name: List bin
-        run: ls /usr/bin
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
