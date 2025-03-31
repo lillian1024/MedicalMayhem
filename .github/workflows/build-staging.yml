@@ -24,7 +24,6 @@ jobs:
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
-          source-dir: /workspace/Lilian/MedicalMayhemA
           c-compiler: gcc
           build-dir: ./
           options: |
