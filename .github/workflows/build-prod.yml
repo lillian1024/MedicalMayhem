@@ -26,6 +26,8 @@ jobs:
           lfs: true
       - name: Install WinGW
         run: npm i @xpack-dev-tools/mingw-w64-gcc
+      - name: List bin
+        run: ls /usr/bin
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
