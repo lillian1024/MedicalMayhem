@@ -37,7 +37,7 @@ void ProcessDoctorMenuAction(int* appFlags)
             ShowDoctorMenu(1, appFlags);
             break;
         case 2:
-            showAllDoctor(&doctorLL);
+            showAllDoctor();
             ShowDoctorMenu(1, appFlags);
             break;
         case 3:
@@ -67,5 +67,5 @@ void ShowAddDoctor()
     printf("Please input the number of evening shift: ");
     int eveningShift = AskIntChoice(0, 7);
 
-    addDoctor(&doctorLL, name, morningShift, afternoonShift, eveningShift);
+    addDoctor(name, morningShift, afternoonShift, eveningShift);
 }

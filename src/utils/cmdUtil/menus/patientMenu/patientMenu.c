@@ -80,6 +80,13 @@ void ShowPatientAdd()
     scanf("%d", &patientID);
     flushSTDIN();
 
+    while (GetPatientRecordByID(patientID) != NULL)
+    {
+        printf("%sId already used!%s Please input a unused id: ", TTYRED, TTYDEF);
+        scanf("%d", &patientID);
+        flushSTDIN();
+    }
+
     printf("Please input the name of the patient: ");
     AskStr(name, MIN_PATIENT_NAME_LENGTH, MAX_PATIENT_NAME_LENGTH);
 
@@ -93,10 +100,10 @@ void ShowPatientAdd()
     scanf("%d", &roomNumber);
     flushSTDIN();
 
-    char* newName = calloc(strlen(name), sizeof(char));
+    char* newName = calloc(strlen(name)+1, sizeof(char));
     strcpy(newName, name);
 
-    char* newDiagnosis = calloc(strlen(diagnosis), sizeof(char));
+    char* newDiagnosis = calloc(strlen(diagnosis)+1, sizeof(char));
     strcpy(newDiagnosis, diagnosis);
 
     if (!AddNewPatient(patientID, newName, age, newDiagnosis, roomNumber))
@@ -138,11 +145,11 @@ Patient* ShowPatientSelection()
 
 void ShowPatientRecords(Patient* patient)
 {
-    printf("Patient %d\n", patient->PatientID);
+    printf("%sPatient id: %d%s\n", TTYUNDER, patient->PatientID, TTYNUND);
     printf("Name: %s\n", patient->Name);
     printf("Age: %d\n", patient->Age);
     printf("Diagnosis: %s\n", patient->Diagnosis);
-    printf("Room number: %d\n", patient->RoomNumber);
+    printf("Room number: %d\n\n", patient->RoomNumber);
 }
 
 void ShowPatientRecord()
@@ -169,11 +176,9 @@ void ShowAllPatientRecords()
 {
     clrscr();
 
-    int patientLen;
+    LL_Sentinel* patients = GetAllPatientsRecords();
 
-    Patient* patients = GetAllPatientsRecords(&patientLen);
-
-    if (patientLen <= 0)
+    if (patients->length <= 0)
     {
         printf("%sNo patients found!%s", TTYRED, TTYDEF);
 
@@ -182,9 +187,9 @@ void ShowAllPatientRecords()
         return;
     }
     
-    for (int i = 0; i < patientLen; i++)
+    for (unsigned int i = 0; i < patients->length; i++)
     {
-        ShowPatientRecords(patients + i);
+        ShowPatientRecords((Patient*)LL_Get(patients, i));
     }
 
     getchar();

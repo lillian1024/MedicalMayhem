@@ -1,13 +1,16 @@
 name: Build CMake Project
 
 on:
+  push:
+    branches:
+      - develop
   pull_request:
     branches:
       - develop
 
 jobs:
   CMake:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         platform:
