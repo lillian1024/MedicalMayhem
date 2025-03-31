@@ -25,7 +25,7 @@ jobs:
         with:
           lfs: true
       - name: Install WinGW
-        run: apt install -Y mingw-w64-gcc
+        run: apt install -y mingw-w64-gcc
       - name: List bin
         run: ls /usr/bin
       - name: Build Project
