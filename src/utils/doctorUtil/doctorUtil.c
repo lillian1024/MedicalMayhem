@@ -49,13 +49,13 @@ void DisposeDoctorList()
 
 void validateName(const char *name) {
     if (name == NULL || name[0] == '\0') {
-        errx(1, "Invalid doctor name provided");
+        errx(EXIT_FAILURE, "Invalid doctor name provided");
     }
 }
 
 void validateShift(int shift) {
     if (shift < 0 || shift > 10) { // Assuming doctors cannot have more than 10 shifts per week
-        errx(1, "Invalid shift count: %d", shift);
+        errx(EXIT_FAILURE, "Invalid shift count: %d", shift);
     }
 }
 
@@ -77,7 +77,7 @@ void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int n
 
     doctor *newDoctor = malloc(sizeof(doctor));
     if (!newDoctor) {
-        err(1, "Failed to allocate memory for new doctor");
+        errx(1, "Failed to allocate memory for new doctor");
     }
 
     char* newName = malloc((strlen(name)+1) * sizeof(char));
@@ -105,6 +105,9 @@ void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int n
 void showDoctor(doctor* doctor, void* data)
 {
     (void)data;
+  
+    clrscr();
+  
     printf("%sDoctor number %d:%s \n",TTYUNDER,doctor->id,TTYNUND);
     printf("Name: %s\n", doctor->name);
     printf("Morning Shift: %d\n", doctor->nbShift[0]);

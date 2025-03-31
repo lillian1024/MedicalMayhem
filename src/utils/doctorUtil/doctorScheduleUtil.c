@@ -36,7 +36,7 @@ int** createSchedule()
     int** schedule = malloc(DAYS * sizeof(int*));
     if (!schedule) 
     {
-        err(1, "Failed to allocate memory for schedule");
+        errx(1, "Failed to allocate memory for schedule");
     }
 
     for (int i = 0; i < DAYS; i++) 
@@ -44,7 +44,7 @@ int** createSchedule()
         schedule[i] = malloc(SHIFTS * sizeof(int));
         if (!schedule[i]) 
         {
-            err(1, "Failed to allocate memory for shifts");
+            errx(1, "Failed to allocate memory for shifts");
         }
 
         for (int j = 0; j < SHIFTS; j++) 
@@ -102,6 +102,10 @@ doctor* GetDoctorBy()
         return NULL;
     }
 
+    schedule[day][shift] = malloc(MAX_NAME_LEN);
+    if (!schedule[day][shift]) {
+        errx(1, "Memory allocation failed for schedule slot");
+    
     return doctor;
 }
 
