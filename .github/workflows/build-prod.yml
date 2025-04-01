@@ -19,7 +19,7 @@ jobs:
             compiler: "gcc"
           - preset: Windows Build
             name: Windows
-            compiler: "gcc-mingw-w64"
+            compiler: "x86_64-w64-mingw32-gcc"
     steps:
       - uses: actions/checkout@v2
         with:
