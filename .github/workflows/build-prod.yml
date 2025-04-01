@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/CrossPlatformBuild
     tags:
       - 'build-**'
 
@@ -17,15 +16,17 @@ jobs:
           - preset: Linux Build
             name: Linux
             compiler: "gcc"
+            testing: true
           - preset: Windows Build
             name: Windows
-            compiler: "x86_64-w64-mingw32-gcc-win32"
+            compiler: "x86_64-w64-mingw32-gcc"
+            testing: false
     steps:
       - uses: actions/checkout@v2
         with:
           lfs: true
-      - name: Install WinGW
-        run: npm i @xpack-dev-tools/mingw-w64-gcc
+      - name: Install MinGW
+        run: sudo apt install -y gcc-mingw-w64
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
@@ -36,6 +37,7 @@ jobs:
             BUILD_EXAMPLES=OFF
       - name: Test Project
         uses: threeal/ctest-action@v1.1.0
+        if: ${{ matrix.platform.testing }}
         with:
           test-dir: ./
           verbose: true
