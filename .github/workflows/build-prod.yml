@@ -17,9 +17,11 @@ jobs:
           - preset: Linux Build
             name: Linux
             compiler: "gcc"
+            testing: true
           - preset: Windows Build
             name: Windows
             compiler: "x86_64-w64-mingw32-gcc"
+            testing: false
     steps:
       - uses: actions/checkout@v2
         with:
@@ -36,8 +38,9 @@ jobs:
             BUILD_EXAMPLES=OFF
       - name: Test Project
         uses: threeal/ctest-action@v1.1.0
+        if: ${{ matrix.platform.testing }}
         with:
-          test-dir: ./build
+          test-dir: ./
           verbose: true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
