@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <err.h>
 #include "../llistUtil/llist.h"
 
 #define DAYS 7
@@ -35,7 +34,7 @@ void InitializeDoctorList();
 void LoadDoctorList(LL_Sentinel* list);
 void DisposeDoctorList();
 
-void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
+int addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
 extern const char *weekdays[DAYS];
 extern const char *shiftNames[SHIFTS];
 void showAllDoctor();
