@@ -101,10 +101,6 @@ doctor* GetDoctorBy()
 
         return NULL;
     }
-
-    schedule[day][shift] = malloc(MAX_NAME_LEN);
-    if (!schedule[day][shift]) {
-        errx(1, "Memory allocation failed for schedule slot");
     
     return doctor;
 }
