@@ -7,9 +7,13 @@
 #include <io.h>
 #define R_OK 4
 #define access _access
+char separator = '\\';
 #else
 #include <unistd.h>
+char separator = '/';
 #endif
+
+char* appDirectory;
 
 const char* saveDataSubPath = "/saveData.txt";
 char* saveDataPath;
@@ -28,15 +32,21 @@ int CanLoad(char* filepath)
     return access(filepath, R_OK) == 0;
 }
 
-char* GetSaveDataPath(const char* appPath)
+void LoadAppDirectory(const char* appPath) {
+    char* slash = strrchr(appPath, separator);
+
+    int length = slash - appPath;
+
+    appDirectory = calloc(length + 1, sizeof(char));
+
+    strncpy(appDirectory, appPath, length);
+}
+
+char* GetSaveDataPath()
 {
-    char* appPathLastSlash = strrchr(appPath, '/');
-
-    *appPathLastSlash = '\0';
-
     int saveDataPathLength;
 
-    saveDataPathLength = strlen(appPath) + strlen(saveDataSubPath) + 1;
+    saveDataPathLength = strlen(appDirectory) + strlen(saveDataSubPath) + 1;
 
     char* dataPath = calloc(saveDataPathLength, sizeof(char));
 
@@ -45,7 +55,7 @@ char* GetSaveDataPath(const char* appPath)
         return NULL;
     }
 
-    strcpy(dataPath, appPath);
+    strcpy(dataPath, appDirectory);
     strcat(dataPath, saveDataSubPath);
 
     return dataPath;
@@ -123,6 +133,7 @@ int WriteSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel* patie
 
     if (dataFile == NULL)
     {
+        printf("error opening data file\n");
         return 0;
     }
 

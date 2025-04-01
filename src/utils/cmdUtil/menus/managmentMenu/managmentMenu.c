@@ -6,11 +6,14 @@
 #include "../mainMenu/mainMenu.h"
 #include "../../../reportUtil/reportUtil.h"
 #include "../../../saveUtil/saveUtil.h"
+#include "../../../saveUtil/backupUtil.h"
 
 void ShowDoctorReport();
 void ShowEquipmentReport();
 void ShowExportBackup();
 void ShowImportBackup();
+void ShowChangeRate();
+void TurnOnOffAutomaticBackup();
 
 void ShowManagmentMenu(int clearScreen, int* appFlags)
 {
@@ -30,13 +33,15 @@ void DisplayManagmentMenu()
     printf("2. Show Equiment Report\n");
     printf("3. Export Backup\n");
     printf("4. Import Backup\n");
-    printf("5. Back\n");
+    printf("5. Change Backup Rate\n");
+    printf("6. Turn On/Off Automatic Backup\n");
+    printf("7. Back\n");
     printf("Select menu: ");
 }
 
 void ProcessManagmentMenuAction(int* appFlags)
 {
-    int menu = AskIntChoice(1, 5);
+    int menu = AskIntChoice(1, 7);
     
     switch (menu)
     {
@@ -57,6 +62,14 @@ void ProcessManagmentMenuAction(int* appFlags)
             ShowManagmentMenu(1, appFlags);
             break;
         case 5:
+            ShowChangeRate();
+            ShowManagmentMenu(1, appFlags);
+            break;
+        case 6:
+            TurnOnOffAutomaticBackup();
+            ShowManagmentMenu(1, appFlags);
+            break;
+        case 7:
             ShowMainMenu(1, appFlags);
             break;
         default:
@@ -234,4 +247,28 @@ void ShowImportBackup()
     free(path);
 
     getchar();
+}
+
+void ShowChangeRate()
+{
+
+    clrscr();
+
+    printf("Enter New Backup Rate(value in minute): ");
+    int choice = AskIntChoice(1, 10);
+    SetBackupInterval(choice*60);
+    return;
+}
+
+void TurnOnOffAutomaticBackup() {
+    clrscr();
+    printf("Do you want to turn On or Off automatic backup (1:ON, 2:OFF) ");
+    int choice = AskIntChoice(1, 2);
+    if (choice == 1) {
+        EnableBackup();
+    }
+    else {
+        DisableBackup();
+    }
+
 }
