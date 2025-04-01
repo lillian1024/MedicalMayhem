@@ -65,6 +65,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 .cmake/
+cmake-build-debug/
 DartConfiguration.tcl
 .ninja_deps
 .ninja_log
