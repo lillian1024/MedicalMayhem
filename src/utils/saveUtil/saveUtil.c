@@ -28,7 +28,7 @@ const char* backupScheduleSubPath = "_schedule.txt";
 int nbPatients;
 int nbDoctor;
 
-//TODO as been modified because was not retrieved data if schedule wasn't created at the beginning
+//TODO has been modified because was not retrieving data if schedule wasn't created at the beginning
 int CanLoad(char* filepath)
 {
     if (access(filepath, R_OK) == 0) {
@@ -36,7 +36,7 @@ int CanLoad(char* filepath)
     }
 
     // If the file does not exist, create it
-    int fd = open(filepath, O_CREAT | O_WRONLY, 0644);
+    int fd = fopen(filepath,"r");
     if (fd == -1) {
         perror("Failed to create file");
         return 0; // File creation failed
