@@ -1,3 +1,4 @@
+#include <reportUtil.h>
 #include <stdio.h>
 
 #include "backupUtil.h"
@@ -60,6 +61,7 @@ void LoadSaveFilesPath(const char* appPath)
 {
     LoadAppDirectory(appPath);
     LoadSavePaths(appPath);
+    make_directory();
 }
 
 int main(int argc, char* argv[])

@@ -11,4 +11,5 @@ void EnableBackup();
 void  DisableBackup();
 void StartBackupThread();
 void writeBackupToFile();
+void make_directory();
 #endif //BACKUPUTIL_H

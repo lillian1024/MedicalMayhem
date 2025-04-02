@@ -15,7 +15,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(RESOURCE_FILE my.rc)
 
 # set compiler details
-add_compile_options(-Wall -Wextra -Werror -g)
+add_compile_options(-Wall -Wextra -Werror  -g)
+
 
 # auto-fill config header file
 configure_file(src/config.h.in src/config.h)

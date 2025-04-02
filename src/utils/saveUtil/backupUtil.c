@@ -10,11 +10,33 @@
 #include <string.h>
 
 #include "saveUtil.h"
+#include <sys/stat.h>
+#ifdef _WIN32
+#include <direct.h>
+#include <dirent.h>
+#endif
 
+
+const char * directoryBackupPath = "/automatic";
 char* backupSubPath = "/automatic/backup";
 int backupInterval = 30; // Default: 3 minutes
 int backupEnabled = 1;    // Backup is enabled by default
 pthread_mutex_t backupMutex = PTHREAD_MUTEX_INITIALIZER;
+
+void make_directory()
+{
+    int appDirLen1 = strlen(appDirectory);
+    int pathLength1 = strlen(directoryBackupPath);
+    char* dataPath = calloc(pathLength1 + appDirLen1 + 1, sizeof(char));
+    strcpy(dataPath, appDirectory);
+    strcat(dataPath, directoryBackupPath);
+#if defined(_WIN32)
+    _mkdir(dataPath);
+#else
+    mkdir(dataPath, 0700);
+#endif
+}
+
 
 void* PeriodicBackup(void* ) {
 
@@ -25,7 +47,6 @@ void* PeriodicBackup(void* ) {
         pthread_mutex_lock(&backupMutex);
         if (backupEnabled) { // Only back up if enabled
             writeBackupToFile();
-            printf("Backup completed.\n");
         }
         pthread_mutex_unlock(&backupMutex);
     }

@@ -4,6 +4,7 @@
 #include "../cmdUtil/cmdUtil.h"
 
 LL_Sentinel* PatientList;
+int nbPatientsDischarged = 0;
 
 /// @brief Initialize the Patient list. This function must be called before any other functions in patientUtil.
 void InitializePatientList()
@@ -141,7 +142,16 @@ void DischargePatient(Patient* patient)
 
             free(patient);
 
+            nbPatientsDischarged++;
             return;
         }
     }
+}
+
+int getNbDischarged() {
+    return nbPatientsDischarged;
+}
+
+void setPatientDischarged(int nbPatientDischargedFromFile) {
+    nbPatientsDischarged = nbPatientDischargedFromFile;
 }
