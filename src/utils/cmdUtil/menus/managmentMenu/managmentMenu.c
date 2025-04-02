@@ -171,7 +171,7 @@ void ShowFullReport() {
 
     clrscr();
 
-    printf(report);
+    printf("%s",report);
 
     printf("Do you want to save this report to a file? (1:yes, 2:no) ");
     int choice = AskIntChoice(1, 2);
