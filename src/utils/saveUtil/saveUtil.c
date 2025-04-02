@@ -36,7 +36,7 @@ int CanLoad(char* filepath)
     }
 
     // If the file does not exist, create it
-    int fd = fopen(filepath,"r");
+    int fd = fopen(filepath,"a");
     if (fd == -1) {
         perror("Failed to create file");
         return 0; // File creation failed
