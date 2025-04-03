@@ -14,12 +14,12 @@ jobs:
           - preset: Linux Build
             name: Linux
             compiler: "gcc"
-            compileroptions: ""
+            compiler_options: ""
             testing: true
           - preset: Windows Build
             name: Windows
             compiler: "x86_64-w64-mingw32-gcc"
-            compileroptions: "-pthread"
+            compiler_options: "-pthread"
             testing: false
     steps:
       - uses: actions/checkout@v2
@@ -29,11 +29,11 @@ jobs:
         run: sudo apt install -y gcc-mingw-w64
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
+        env:
+            CMAKE_ADDITIONNAL_PLATFORM_OPTION: ${{ matrix.platform.compileroptions }}
         with:
           c-compiler: ${{ matrix.platform.compiler }}
           build-dir: ./
-          env:
-            CMAKE_ADDITIONNAL_PLATFORM_OPTION: ${{ matrix.platform.compileroptions }}
           options: |
             BUILD_TESTS=ON
             BUILD_EXAMPLES=OFF
