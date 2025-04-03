@@ -10,7 +10,7 @@
 
 #define MIN_PATIENT_NAME_LENGTH 3
 #define MAX_PATIENT_NAME_LENGTH 100
-#define MIN_PATIENT_DIAGNOSIS_LENGTH 10
+#define MIN_PATIENT_DIAGNOSIS_LENGTH 5
 #define MAX_PATIENT_DIAGNOSIS_LENGTH 1000
 
 typedef struct
@@ -32,7 +32,8 @@ LL_Sentinel* GetAllPatientsRecords();
 
 Patient* GetPatientRecordByID(int patientID);
 Patient* GetPatientRecordByName(char* patientName);
-
+int getNbDischarged();
+void setPatientDischarged(int nbPatientDischarged);
 void DischargePatient(Patient* patient);
 
 #endif

@@ -56,7 +56,7 @@ int validateName(const char *name) {
 }
 
 int validateShift(int shift) {
-    if (shift < 0 || shift > 10) { // Assuming doctors cannot have more than 10 shifts per week
+    if (shift < 0 || shift > 7) { // Assuming doctors cannot have more than 7 shift of a same type (7 days a  week)
         return 0;
     }
 
