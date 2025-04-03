@@ -14,6 +14,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
 set(RESOURCE_FILE my.rc)
 
+find_package(Threads REQUIRED)
+
 # set compiler details
 add_compile_options(-Wall -Wextra -Werror -g)
 add_compile_options(${CMAKE_ADDITIONNAL_PLATFORM_OPTION})
@@ -45,6 +47,8 @@ add_executable(MedicalMayhem ${Gcc_SOURCES} ${RESOURCE_FILE})
 
 target_sources(MedicalMayhem PRIVATE ${RESOURCE_FILE})
 
+target_link_libraries(MedicalMayhem PRIVATE Threads::Threads)
+
 # Compile test executables
 foreach (_testFile ${TESTS_SOURCES})
     cmake_path(GET _testFile FILENAME _filename)
@@ -54,6 +58,7 @@ foreach (_testFile ${TESTS_SOURCES})
     add_executable(${_filenameNoExt} ${_fileSources})
     unset(_fileSources)
     add_test(NAME ${_filenameNoExt} COMMAND ${_filenameNoExt})
+    target_link_libraries(${_filenameNoExt} PRIVATE Threads::Threads)
 endforeach()
 
 target_include_directories(MedicalMayhem PRIVATE ${Gcc_INCLUDE_DIRS})
