@@ -254,25 +254,28 @@ void ShowImportBackup()
     strcat(dataPath, backupDataSubPath);
     strcat(schedulePath, backupScheduleSubPath);
 
-    LL_Sentinel* patientList = GetAllPatientsRecords();
-    LL_Sentinel* doctorList = DoctorList;
-
-    if (patientList)
-        DisposePatientList();
-    if (doctorList)
-        DisposeDoctorList();
+    LL_Sentinel* patientList = LL_Create();
+    LL_Sentinel* doctorList = LL_Create();
 
     if (!ReadSaveFile(dataPath, schedulePath, &patientList, &doctorList))
     {
+        LL_Dispose(patientList);
+        LL_Dispose(doctorList);
+
         printf("%sUnable to import backup!%s\n", TTYRED, TTYDEF);
     }
     else
     {
         printf("%sBackup imported successfully!%s\n", TTYGRN, TTYDEF);
-    }
 
-    LoadPatientList(patientList);
-    LoadDoctorList(doctorList);
+        if (patientList)
+            DisposePatientList();
+        if (doctorList)
+            DisposeDoctorList();
+
+        LoadPatientList(patientList);
+        LoadDoctorList(doctorList);
+    }
 
     free(dataPath);
     free(schedulePath);
