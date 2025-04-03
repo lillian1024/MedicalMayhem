@@ -1,4 +1,7 @@
+#include <reportUtil.h>
 #include <stdio.h>
+
+#include "backupUtil.h"
 #include "config.h"
 #include "utils/patientUtil/patientUtil.h"
 #include "doctorUtil.h"
@@ -30,6 +33,7 @@ void LoadData(void)
 
 void InitializeProgram(void)
 {
+    StartBackupThread();
     if (CanLoad(saveDataPath) && CanLoad(saveSchedulePath))
     {
         LoadData();
@@ -55,7 +59,9 @@ void CloseProgram(void)
 
 void LoadSaveFilesPath(const char* appPath)
 {
+    LoadAppDirectory(appPath);
     LoadSavePaths(appPath);
+    make_directory();
 }
 
 int main(int argc, char* argv[])
