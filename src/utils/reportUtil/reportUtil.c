@@ -455,7 +455,6 @@ void GeneratePatientsReport(char* patientBuffer) {
             index3 = i;
         }
     }
-
     
     double firstPercentage = (patientList->length == 0) ? 0 : (double)diseaseHisto[index1] / patientList->length * 100;
     double secondPercentage = (patientList->length == 0) ? 0 : (double)diseaseHisto[index2] / patientList->length * 100;
