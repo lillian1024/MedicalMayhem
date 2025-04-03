@@ -16,6 +16,7 @@ set(RESOURCE_FILE my.rc)
 
 # set compiler details
 add_compile_options(-Wall -Wextra -Werror -g)
+add_compile_options(${CMAKE_ADDITIONNAL_PLATFORM_OPTION})
 
 # auto-fill config header file
 configure_file(src/config.h.in src/config.h)
@@ -52,7 +53,6 @@ foreach (_testFile ${TESTS_SOURCES})
     list(APPEND _fileSources ${TEST_SOURCES})
     add_executable(${_filenameNoExt} ${_fileSources})
     unset(_fileSources)
-    # target_link_libraries(${_filename} vtkCommon)
     add_test(NAME ${_filenameNoExt} COMMAND ${_filenameNoExt})
 endforeach()
 

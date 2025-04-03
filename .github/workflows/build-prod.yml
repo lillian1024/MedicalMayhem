@@ -16,10 +16,12 @@ jobs:
           - preset: Linux Build
             name: Linux
             compiler: "gcc"
+            compiler_options: ""
             testing: true
           - preset: Windows Build
             name: Windows
             compiler: "x86_64-w64-mingw32-gcc"
+            compiler_options: "-pthread"
             testing: false
     steps:
       - uses: actions/checkout@v2
@@ -32,6 +34,8 @@ jobs:
         with:
           c-compiler: ${{ matrix.platform.compiler }}
           build-dir: ./
+          env:
+            CMAKE_ADDITIONNAL_PLATFORM_OPTION: ${{matrix.platform.compiler_options}}
           options: |
             BUILD_TESTS=ON
             BUILD_EXAMPLES=OFF

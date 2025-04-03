@@ -30,6 +30,8 @@ jobs:
         with:
           c-compiler: ${{ matrix.platform.compiler }}
           build-dir: ./
+          env:
+            CMAKE_ADDITIONNAL_PLATFORM_OPTION: ${{matrix.platform.compiler_options}}
           options: |
             BUILD_TESTS=ON
             BUILD_EXAMPLES=OFF
