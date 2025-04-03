@@ -428,25 +428,19 @@ void GeneratePatientsReport(char* patientBuffer) {
     }
 
     LL_Sentinel* patientList = GetAllPatientsRecords();
-    printf("Total Patients in List: %u\n", patientList->length);
 
     for (size_t i = 0; i < patientList->length; i++) {
         Patient* currentPatient = LL_Get(patientList, i);
-        printf("Processing Patient %zu: Diagnosis = %s\n", i + 1, currentPatient->Diagnosis);
 
         for (int j = 0; j < numDiseases; j++) {
             if (strstr(currentPatient->Diagnosis, diseases[j]) != NULL) {
                 diseaseHisto[j]++;
-                printf(" - Matched Disease [%s]: Count = %d\n", diseases[j], diseaseHisto[j]);
             }
         }
     }
 
     // Print disease histogram before sorting
-    printf("\nDisease Histogram:\n");
-    for (int i = 0; i < numDiseases; i++) {
-        printf("[%s]: %d occurrences\n", diseases[i], diseaseHisto[i]);
-    }
+
 
     int index1 = 0, index2 = 0, index3 = 0;
     for (int i = 0; i < numDiseases; i++) {
@@ -462,11 +456,7 @@ void GeneratePatientsReport(char* patientBuffer) {
         }
     }
 
-    printf("\nTop Diagnoses:\n");
-    printf("1st: %s (%d occurrences)\n", diseases[index1], diseaseHisto[index1]);
-    printf("2nd: %s (%d occurrences)\n", diseases[index2], diseaseHisto[index2]);
-    printf("3rd: %s (%d occurrences)\n", diseases[index3], diseaseHisto[index3]);
-
+    
     double firstPercentage = (patientList->length == 0) ? 0 : (double)diseaseHisto[index1] / patientList->length * 100;
     double secondPercentage = (patientList->length == 0) ? 0 : (double)diseaseHisto[index2] / patientList->length * 100;
     double thirdPercentage = (patientList->length == 0) ? 0 : (double)diseaseHisto[index3] / patientList->length * 100;
