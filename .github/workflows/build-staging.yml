@@ -14,10 +14,12 @@ jobs:
           - preset: Linux Build
             name: Linux
             compiler: "gcc"
+            compiler_options: ""
             testing: true
           - preset: Windows Build
             name: Windows
             compiler: "x86_64-w64-mingw32-gcc"
+            compiler_options: "-pthread"
             testing: false
     steps:
       - uses: actions/checkout@v2
