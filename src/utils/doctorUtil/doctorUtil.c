@@ -47,16 +47,29 @@ void DisposeDoctorList()
     LL_Dispose(DoctorList);
 }
 
-void validateName(const char *name) {
-    if (name == NULL || name[0] == '\0') {
-        errx(1, "Invalid doctor name provided");
-    }
+/// @brief Dispose of a specified doctor list.
+/// @param list The list to dispose
+void DisposeDoctors(LL_Sentinel* list)
+{
+    LL_ForEach(list, disposeDoctorForEach, NULL);
+
+    LL_Dispose(list);
 }
 
-void validateShift(int shift) {
-    if (shift < 0 || shift > 10) { // Assuming doctors cannot have more than 10 shifts per week
-        errx(1, "Invalid shift count: %d", shift);
+int validateName(const char *name) {
+    if (name == NULL || name[0] == '\0') {
+        return 0;
     }
+
+    return 1;
+}
+
+int validateShift(int shift) {
+    if (shift < 0 || shift > 7) { // Assuming doctors cannot have more than 7 shift of a same type (7 days a  week)
+        return 0;
+    }
+
+    return 1;
 }
 
 int doctorHasId(doctor* doctor, int* id)
@@ -69,25 +82,29 @@ int doctorhasName(doctor* doctor, char* name)
     return strcmp(doctor->name, name) == 0;
 }
 
-void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift) {
-    validateName(name);
-    validateShift(nbMorningShift);
-    validateShift(nbAfternoonShift);
-    validateShift(nbEveningShift);
+int addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift) {
+    if (!validateName(name))
+        return 0;
+    if (!validateShift(nbMorningShift))
+        return 0;
+    if (!validateShift(nbAfternoonShift))
+        return 0;
+    if (!validateShift(nbEveningShift))
+        return 0;
 
     doctor *newDoctor = malloc(sizeof(doctor));
     if (!newDoctor) {
-        err(1, "Failed to allocate memory for new doctor");
+        return 0;
     }
 
     char* newName = malloc((strlen(name)+1) * sizeof(char));
 
     if (!newName)
     {
-        err(1, "Failed to allocate memory for new doctor's name");
+        return 0;
     }
 
-    strncpy(newName, name, MAX_NAME_LEN - 1);
+    strncpy(newName, name, strlen(name)+1);
 
     int id;
     for (id = 0; LL_Contains(DoctorList, (int(*)(void*, void*))&doctorHasId, &id); id++) { }
@@ -100,11 +117,16 @@ void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int n
     newDoctor->nbShift[2] = nbEveningShift;
 
     LL_Append(DoctorList, newDoctor);
+
+    return 1;
 }
 
 void showDoctor(doctor* doctor, void* data)
 {
     (void)data;
+  
+    clrscr();
+  
     printf("%sDoctor number %d:%s \n",TTYUNDER,doctor->id,TTYNUND);
     printf("Name: %s\n", doctor->name);
     printf("Morning Shift: %d\n", doctor->nbShift[0]);

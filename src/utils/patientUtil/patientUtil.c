@@ -4,6 +4,7 @@
 #include "../cmdUtil/cmdUtil.h"
 
 LL_Sentinel* PatientList;
+int nbPatientsDischarged = 0;
 
 /// @brief Initialize the Patient list. This function must be called before any other functions in patientUtil.
 void InitializePatientList()
@@ -42,6 +43,15 @@ void DisposePatientList()
     LL_ForEach(PatientList, disposePatient, NULL);
 
     LL_Dispose(PatientList);
+}
+
+/// @brief Dispose of the specified patient list.
+/// @param The list to dispose
+void DisposePatients(LL_Sentinel* list)
+{
+    LL_ForEach(list, disposePatient, NULL);
+
+    LL_Dispose(list);
 }
 
 /// @brief Safely add a new patient to the record (Patients array).
@@ -141,7 +151,16 @@ void DischargePatient(Patient* patient)
 
             free(patient);
 
+            nbPatientsDischarged++;
             return;
         }
     }
+}
+
+int getNbDischarged() {
+    return nbPatientsDischarged;
+}
+
+void setPatientDischarged(int nbPatientDischargedFromFile) {
+    nbPatientsDischarged = nbPatientDischargedFromFile;
 }

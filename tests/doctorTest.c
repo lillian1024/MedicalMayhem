@@ -28,10 +28,6 @@ int main()
 
     // Free the doctor list
     DisposeDoctorList();
-    /*doctor *current = list.head;
-    while (current != NULL) {
-        doctor *temp = current;
-        current = current->next;
-        free(temp);
-    }*/
+
+    destorySchedule(schedule);
 }

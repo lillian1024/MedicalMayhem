@@ -36,7 +36,7 @@ int** createSchedule()
     int** schedule = malloc(DAYS * sizeof(int*));
     if (!schedule) 
     {
-        err(1, "Failed to allocate memory for schedule");
+        errx(1, "Failed to allocate memory for schedule");
     }
 
     for (int i = 0; i < DAYS; i++) 
@@ -44,7 +44,7 @@ int** createSchedule()
         schedule[i] = malloc(SHIFTS * sizeof(int));
         if (!schedule[i]) 
         {
-            err(1, "Failed to allocate memory for shifts");
+            errx(1, "Failed to allocate memory for shifts");
         }
 
         for (int j = 0; j < SHIFTS; j++) 
@@ -55,14 +55,19 @@ int** createSchedule()
     return schedule;
 }
 
-void destoryWeekSchedule()
+void destorySchedule(int** schedule)
 {
     for (int i = 0; i < DAYS; i++) 
     {
-        free(weekSchedule[i]);
+        free(schedule[i]);
     }
 
-    free(weekSchedule);
+    free(schedule);
+}
+
+void destoryWeekSchedule()
+{
+    destorySchedule(weekSchedule);
 }
 
 doctor* GetDoctorBy()
@@ -101,7 +106,7 @@ doctor* GetDoctorBy()
 
         return NULL;
     }
-
+    
     return doctor;
 }
 
@@ -126,3 +131,5 @@ void assignDoctor(int** schedule)
 
     printf("Doctor assigned successfully!\n");
 }
+
+

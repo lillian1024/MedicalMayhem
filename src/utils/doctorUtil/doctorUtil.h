@@ -1,10 +1,21 @@
 ﻿#ifndef DOCTORUTIL_H
 #define DOCTORUTIL_H
 
+#if !defined(__MINGW32__)
+#include <err.h>
+#else
+
+#define errx(retval, ...) do { \
+    fprintf(stderr, __VA_ARGS__); \
+    fprintf(stderr, "Undefined error: %d\n", errno); \
+    exit(retval); \
+} while(0)
+
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <err.h>
 #include "../llistUtil/llist.h"
 
 #define DAYS 7
@@ -22,8 +33,9 @@ extern LL_Sentinel* DoctorList;
 void InitializeDoctorList();
 void LoadDoctorList(LL_Sentinel* list);
 void DisposeDoctorList();
+void DisposeDoctors(LL_Sentinel* list);
 
-void addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
+int addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
 extern const char *weekdays[DAYS];
 extern const char *shiftNames[SHIFTS];
 void showAllDoctor();

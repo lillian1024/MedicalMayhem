@@ -80,6 +80,13 @@ void ShowPatientAdd()
     scanf("%d", &patientID);
     flushSTDIN();
 
+    while (GetPatientRecordByID(patientID) != NULL)
+    {
+        printf("%sId already used!%s Please input a unused id: ", TTYRED, TTYDEF);
+        scanf("%d", &patientID);
+        flushSTDIN();
+    }
+
     printf("Please input the name of the patient: ");
     AskStr(name, MIN_PATIENT_NAME_LENGTH, MAX_PATIENT_NAME_LENGTH);
 

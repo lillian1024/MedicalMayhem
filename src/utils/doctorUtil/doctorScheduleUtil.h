@@ -11,6 +11,7 @@ extern int** weekSchedule;
 
 void displayWeekSchedule(int** schedule);
 int** createSchedule();
+void destorySchedule(int** schedule);
 void destoryWeekSchedule();
 void assignDoctor(int** schedule);
 

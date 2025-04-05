@@ -128,6 +128,11 @@ int LL_Insert(LL_Sentinel* ll, void* data, unsigned int index)
     return 1;
 }
 
+/// @brief Remove the element of a linked list at a specified index and free the list item.
+/// @param ll The list in which to remove the item
+/// @param index The index of the item to remove
+/// @return The data of the item removed
+/// @warning The data of the item is not freed using this function
 void* LL_RemoveAt(LL_Sentinel* ll, unsigned int index)
 {
     if (index > ll->length)

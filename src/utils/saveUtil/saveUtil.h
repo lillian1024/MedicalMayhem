@@ -6,8 +6,15 @@
 #ifndef SAVE_UTIL_H
 #define SAVE_UTIL_H
 
+extern char* appDirectory;
+
 extern char* saveDataPath;
 extern char* saveSchedulePath;
+
+extern const char* backupDataSubPath;
+extern const char* backupScheduleSubPath;
+
+void LoadAppDirectory(const char* appPath);
 
 void LoadSavePaths(const char* appPath);
 
