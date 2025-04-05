@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(MedicalMayhem VERSION 1.0 LANGUAGES C)
+project(MedicalMayhem VERSION 2.0 LANGUAGES C)
 
 include(CTest)
 
