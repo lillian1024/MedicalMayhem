@@ -47,6 +47,15 @@ void DisposeDoctorList()
     LL_Dispose(DoctorList);
 }
 
+/// @brief Dispose of a specified doctor list.
+/// @param list The list to dispose
+void DisposeDoctors(LL_Sentinel* list)
+{
+    LL_ForEach(list, disposeDoctorForEach, NULL);
+
+    LL_Dispose(list);
+}
+
 int validateName(const char *name) {
     if (name == NULL || name[0] == '\0') {
         return 0;
@@ -95,7 +104,7 @@ int addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nb
         return 0;
     }
 
-    strncpy(newName, name, MAX_NAME_LEN - 1);
+    strncpy(newName, name, strlen(name)+1);
 
     int id;
     for (id = 0; LL_Contains(DoctorList, (int(*)(void*, void*))&doctorHasId, &id); id++) { }

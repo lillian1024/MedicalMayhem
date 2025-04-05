@@ -35,6 +35,7 @@ void make_directory()
 #else
     mkdir(dataPath, 0700);
 #endif
+    free(dataPath);
 }
 
 

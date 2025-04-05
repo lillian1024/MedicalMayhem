@@ -25,6 +25,7 @@ typedef struct
 void InitializePatientList();
 void LoadPatientList(LL_Sentinel* list);
 void DisposePatientList();
+void DisposePatients(LL_Sentinel* list);
 
 int AddNewPatient(int patientID, char* name, int age, char* diagnosis, int roomNumber);
 

@@ -378,10 +378,20 @@ int ReadSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel** patie
         return 0;
     }
 
+    if (!scheduleFile)
+    {
+        fclose(dataFile);
+        
+        return 0;
+    }
+
     int nbPatient, nbDoctor, nbPatientDischarged;
 
     if (!GetSaveMetaData(dataFile, &nbPatient, &nbDoctor, &nbPatientDischarged))
     {
+        fclose(dataFile);
+        fclose(scheduleFile);
+
         return 0;
     }
 
@@ -390,12 +400,18 @@ int ReadSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel** patie
 
     if (!*patientList)
     {
+        fclose(dataFile);
+        fclose(scheduleFile);
+
         return 0;
     }
 
     if (!ReadAllPatients(dataFile, nbPatient, *patientList))
     {
         LL_Dispose(*patientList);
+        
+        fclose(dataFile);
+        fclose(scheduleFile);
 
         return 0;
     }
@@ -406,6 +422,9 @@ int ReadSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel** patie
     {
         LL_Dispose(*patientList);
 
+        fclose(dataFile);
+        fclose(scheduleFile);
+
         return 0;
     }
 
@@ -413,11 +432,22 @@ int ReadSaveFile(char* dataFilePath, char* scheduleFilePath, LL_Sentinel** patie
     {
         LL_Dispose(*patientList);
 
+        fclose(dataFile);
+        fclose(scheduleFile);
+
         return 0;
+    }
+
+    if (weekSchedule)
+    {
+        destoryWeekSchedule();
     }
 
     if (!ReadScheduleFromFile(scheduleFile, &weekSchedule))
     {
+        fclose(dataFile);
+        fclose(scheduleFile);
+
         return 0;
     }
 

@@ -17,8 +17,10 @@ set(RESOURCE_FILE my.rc)
 find_package(Threads REQUIRED)
 
 # set compiler details
-add_compile_options(-Wall -Wextra -Werror -g)
+add_compile_options(-Wall -Wextra -Werror -fsanitize=address -g)
 add_compile_options(${CMAKE_ADDITIONNAL_PLATFORM_OPTION})
+
+add_link_options(-fsanitize=address)
 
 # auto-fill config header file
 configure_file(src/config.h.in src/config.h)

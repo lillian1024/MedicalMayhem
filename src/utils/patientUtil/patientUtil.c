@@ -45,6 +45,15 @@ void DisposePatientList()
     LL_Dispose(PatientList);
 }
 
+/// @brief Dispose of the specified patient list.
+/// @param The list to dispose
+void DisposePatients(LL_Sentinel* list)
+{
+    LL_ForEach(list, disposePatient, NULL);
+
+    LL_Dispose(list);
+}
+
 /// @brief Safely add a new patient to the record (Patients array).
 /// @param patientID Patient's ID
 /// @param name Patient's Name
