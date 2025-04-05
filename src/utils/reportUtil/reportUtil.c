@@ -330,8 +330,11 @@ char* GetHospitalReport(char* username) {
     else {
         for (int i = 0; i < count; i++) {
             strcat(bufferReport,reportBuffer[i]);
+            free(reportBuffer[i]);
         }
     }
+
+    free(reportBuffer);
 
     char observationBuffer[OBSERVATION_BUFFER];
     GenerateObservations(count, observationBuffer);

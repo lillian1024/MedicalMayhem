@@ -14,12 +14,14 @@ jobs:
           - preset: Linux Build
             name: Linux
             compiler: "gcc"
-            compiler_options: ""
+            compiler_options: "-fsanitize=address"
+            linker_options: "-fsanitize=address"
             testing: true
           - preset: Windows Build
             name: Windows
             compiler: "x86_64-w64-mingw32-gcc"
             compiler_options: "-pthread"
+            linker_options: ""
             testing: false
     permissions:
       contents: write
@@ -35,6 +37,7 @@ jobs:
         uses: threeal/cmake-action@v2.1.0
         env:
             CMAKE_ADDITIONNAL_PLATFORM_OPTION: ${{ matrix.platform.compileroptions }}
+            CMAKE_ADDITIONNAL_LINKER_OPTION: ${{ matrix.platform.linker_options }}
         with:
           c-compiler: ${{ matrix.platform.compiler }}
           build-dir: ./

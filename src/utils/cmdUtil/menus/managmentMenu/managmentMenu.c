@@ -268,10 +268,8 @@ void ShowImportBackup()
     {
         printf("%sBackup imported successfully!%s\n", TTYGRN, TTYDEF);
 
-        if (patientList)
-            DisposePatientList();
-        if (doctorList)
-            DisposeDoctorList();
+        DisposePatientList();
+        DisposeDoctorList();
 
         LoadPatientList(patientList);
         LoadDoctorList(doctorList);

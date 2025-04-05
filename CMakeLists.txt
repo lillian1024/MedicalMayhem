@@ -20,6 +20,8 @@ find_package(Threads REQUIRED)
 add_compile_options(-Wall -Wextra -Werror -g)
 add_compile_options(${CMAKE_ADDITIONNAL_PLATFORM_OPTION})
 
+add_link_options(${CMAKE_ADDITIONNAL_LINKER_OPTION})
+
 # auto-fill config header file
 configure_file(src/config.h.in src/config.h)
 

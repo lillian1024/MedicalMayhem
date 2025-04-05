@@ -33,6 +33,7 @@ extern LL_Sentinel* DoctorList;
 void InitializeDoctorList();
 void LoadDoctorList(LL_Sentinel* list);
 void DisposeDoctorList();
+void DisposeDoctors(LL_Sentinel* list);
 
 int addDoctor(const char *name, int nbMorningShift, int nbAfternoonShift, int nbEveningShift);
 extern const char *weekdays[DAYS];

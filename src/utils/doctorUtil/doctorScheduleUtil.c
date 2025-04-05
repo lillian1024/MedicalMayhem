@@ -55,14 +55,19 @@ int** createSchedule()
     return schedule;
 }
 
-void destoryWeekSchedule()
+void destorySchedule(int** schedule)
 {
     for (int i = 0; i < DAYS; i++) 
     {
-        free(weekSchedule[i]);
+        free(schedule[i]);
     }
 
-    free(weekSchedule);
+    free(schedule);
+}
+
+void destoryWeekSchedule()
+{
+    destorySchedule(weekSchedule);
 }
 
 doctor* GetDoctorBy()
@@ -126,3 +131,5 @@ void assignDoctor(int** schedule)
 
     printf("Doctor assigned successfully!\n");
 }
+
+

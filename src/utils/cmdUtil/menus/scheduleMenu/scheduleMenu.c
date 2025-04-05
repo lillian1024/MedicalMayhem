@@ -82,6 +82,8 @@ void ShowCreateSchedule()
 
         if (choice == 0)
             return;
+
+        destoryWeekSchedule();
     }
 
     weekSchedule = createSchedule();
